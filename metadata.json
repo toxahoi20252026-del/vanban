@@ -1,0 +1,5 @@
+{
+  "name": "3.3 VisionScript 2026 - Hỗ trợ soạn thảo Đơn công nhận Sáng kiến",
+  "description": "Ứng dụng AI chuyên biệt hỗ trợ giáo viên Việt Nam soạn thảo Đơn yêu cầu công nhận sáng kiến năm 2026 đúng mẫu hành chính, chuẩn Thông tư 18/2013/TT-BKHCN.",
+  "requestFramePermissions": ["microphone"]
+}
