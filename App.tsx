@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { 
-  Upload, 
+import {
+  Upload,
   ChevronRight,
   FileType,
   BookOpen,
@@ -102,21 +102,21 @@ const SUMMARY_LEVELS = [
 ];
 
 const SUBJECTS = [
-  "Toán học", "Ngữ văn", "Tiếng Anh", "Khoa học tự nhiên", 
-  "Lịch sử và Địa lý", "GDCD", "Tin học", "Công nghệ", 
+  "Toán học", "Ngữ văn", "Tiếng Anh", "Khoa học tự nhiên",
+  "Lịch sử và Địa lý", "GDCD", "Tin học", "Công nghệ",
   "Giáo dục thể chất", "Nghệ thuật (Âm nhạc, Mỹ thuật)"
 ];
 
 const TEXTBOOKS = [
-  "Kết nối tri thức", 
-  "Chân trời sáng tạo", 
+  "Kết nối tri thức",
+  "Chân trời sáng tạo",
   "Cánh diều"
 ];
 
 const CLASSES = [
-  "6/1", "6/2", "6/3", 
-  "7/1", "7/2", "7/3", 
-  "8/1", "8/2", "8/3", 
+  "6/1", "6/2", "6/3",
+  "7/1", "7/2", "7/3",
+  "8/1", "8/2", "8/3",
   "9/1", "9/2", "9/3"
 ];
 
@@ -155,8 +155,8 @@ const DiffView: React.FC<{ oldText: string, newText: string }> = ({ oldText, new
           key={index}
           className={
             part.added ? 'bg-emerald-100 text-emerald-800 px-1 rounded' :
-            part.removed ? 'bg-red-100 text-red-800 line-through px-1 rounded' :
-            ''
+              part.removed ? 'bg-red-100 text-red-800 line-through px-1 rounded' :
+                ''
           }
         >
           {part.value}
@@ -175,7 +175,7 @@ const PRESETS = [
 
 const App: React.FC = () => {
   const [fileData, setFileData] = useState<{ base64: string, mimeType: string, name: string, rawText?: string } | null>(null);
-  const [inputText, setInputText] = useState(PRESETS[1].prompt); 
+  const [inputText, setInputText] = useState(PRESETS[1].prompt);
   const [activePreset, setActivePreset] = useState(PRESETS[1].id);
   const [rewriteStyle, setRewriteStyle] = useState('academic');
   const [summaryLevel, setSummaryLevel] = useState('standard');
@@ -186,7 +186,7 @@ const App: React.FC = () => {
   const [showKey, setShowKey] = useState(false);
   const [keySaved, setKeySaved] = useState(false);
   const [copied, setCopied] = useState(false);
-  
+
   // New States for enhanced features
   const [isRecording, setIsRecording] = useState(false);
   const [logicCheckResult, setLogicCheckResult] = useState<LogicCheckResult | null>(null);
@@ -239,7 +239,7 @@ const App: React.FC = () => {
     }
     const savedHistory = localStorage.getItem('VISION_SCRIPT_HISTORY');
     if (savedHistory) {
-      try { setHistory(JSON.parse(savedHistory)); } catch (e) {}
+      try { setHistory(JSON.parse(savedHistory)); } catch (e) { }
     }
   }, []);
 
@@ -263,9 +263,9 @@ const App: React.FC = () => {
       if (isWord) {
         const arrayBuffer = await file.arrayBuffer();
         const result = await mammoth.extractRawText({ arrayBuffer });
-        setFileData({ 
-          base64: `data:text/plain;base64,${btoa(unescape(encodeURIComponent(result.value)))}`, 
-          mimeType: 'text/plain', 
+        setFileData({
+          base64: `data:text/plain;base64,${btoa(unescape(encodeURIComponent(result.value)))}`,
+          mimeType: 'text/plain',
           name: file.name,
           rawText: result.value
         });
@@ -302,17 +302,17 @@ const App: React.FC = () => {
           setStatus(AppStatus.LOADING);
           try {
             const result = await analyzeContent(
-              "", 
-              "audio/webm", 
-              "Hãy chuyển đổi phiên thảo luận này thành bản nháp sáng kiến.", 
-              (chunk) => setRawOutput(chunk), 
-              "audio_to_draft", 
-              userKey, 
+              "",
+              "audio/webm",
+              "Hãy chuyển đổi phiên thảo luận này thành bản nháp sáng kiến.",
+              (chunk) => setRawOutput(chunk),
+              "audio_to_draft",
+              userKey,
               "skkn",
               "standard",
               { data: base64Audio, mimeType: 'audio/webm' }
             );
-            
+
             // Parse the draft and fill the form (simplified)
             setSkknData(prev => ({
               ...prev,
@@ -321,7 +321,7 @@ const App: React.FC = () => {
               solution1: result.match(/Giải pháp:?\s*([\s\S]*?)(?=Hiệu quả|$)/i)?.[1]?.trim() || prev.solution1,
               benefits: result.match(/Hiệu quả:?\s*([\s\S]*?)$/i)?.[1]?.trim() || prev.benefits,
             }));
-            
+
             setStatus(AppStatus.SUCCESS);
             setSkknStep(3); // Go to solutions step
           } catch (err: any) {
@@ -434,8 +434,8 @@ const App: React.FC = () => {
 
             while (i < lines.length) {
               const line = lines[i].trim();
-              const nextLine = i + 1 < lines.length ? lines[i+1].trim() : '';
-              
+              const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
+
               // Detect table start: current line has pipes, next line is a separator (pipes and dashes)
               const isSeparator = nextLine.startsWith('|') && nextLine.includes('---') && /^[\s|:-]+$/.test(nextLine);
 
@@ -444,13 +444,13 @@ const App: React.FC = () => {
                 // Header
                 tableData.push(parseRow(lines[i]));
                 i += 2; // Skip header and separator
-                
+
                 // Body
                 while (i < lines.length && lines[i].trim().startsWith('|')) {
                   tableData.push(parseRow(lines[i]));
                   i++;
                 }
-                
+
                 result.push(new Table({
                   width: { size: 100, type: WidthType.PERCENTAGE },
                   borders: {
@@ -463,7 +463,7 @@ const App: React.FC = () => {
                   },
                   rows: tableData.map((row, rowIndex) => new TableRow({
                     children: row.map(cell => new TableCell({
-                      children: [new Paragraph({ 
+                      children: [new Paragraph({
                         children: [new TextRun({ text: cell, bold: rowIndex === 0, font: "Times New Roman", size: 28 })],
                         alignment: rowIndex === 0 ? AlignmentType.CENTER : AlignmentType.LEFT
                       })],
@@ -479,26 +479,26 @@ const App: React.FC = () => {
                   const isSectionHeader = /^[I|V|X]+\./.test(line);
                   const isSubHeader = /^[0-9]+\./.test(line) || /^[0-9]+\.[0-9]+/.test(line);
                   const isKinhGui = line.startsWith("Kính gửi:");
-                  
+
                   // Handle bold text in paragraphs
                   const parts = line.split(/(\*\*.*?\*\*)/g);
                   const children = parts.map(part => {
                     if (part.startsWith('**') && part.endsWith('**')) {
                       return new TextRun({ text: part.slice(2, -2), bold: true, size: 28, font: "Times New Roman" });
                     }
-                    return new TextRun({ 
-                      text: isSectionHeader ? part.toUpperCase() : part, 
-                      bold: isSectionHeader || isSubHeader || isKinhGui, 
-                      size: 28, 
-                      font: "Times New Roman" 
+                    return new TextRun({
+                      text: isSectionHeader ? part.toUpperCase() : part,
+                      bold: isSectionHeader || isSubHeader || isKinhGui,
+                      size: 28,
+                      font: "Times New Roman"
                     });
                   });
 
                   result.push(new Paragraph({
                     children,
                     spacing: { after: 200, line: 360 },
-                    alignment: line.includes("NGƯỜI LÀM ĐƠN") || line.includes("NGƯỜI YÊU CẦU") || line.includes("ngày ... tháng ... năm") 
-                      ? AlignmentType.RIGHT 
+                    alignment: line.includes("NGƯỜI LÀM ĐƠN") || line.includes("NGƯỜI YÊU CẦU") || line.includes("ngày ... tháng ... năm")
+                      ? AlignmentType.RIGHT
                       : AlignmentType.JUSTIFIED,
                   }));
                 }
@@ -522,14 +522,14 @@ const App: React.FC = () => {
         },
         rows: [
           new TableRow({
-            children: ["STT", "Từ sai/Lỗi logic", "Vị trí", "Đoạn văn chứa lỗi", "Dạng đúng/Đề xuất", "Giải thích lý do (Trích dẫn NĐ 30 hoặc QĐ 240/QĐ)"].map(text => 
+            children: ["STT", "Từ sai/Lỗi logic", "Vị trí", "Đoạn văn chứa lỗi", "Dạng đúng/Đề xuất", "Giải thích lý do (Trích dẫn NĐ 30 hoặc QĐ 240/QĐ)"].map(text =>
               new TableCell({
                 children: [new Paragraph({ children: [new TextRun({ text, bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })],
                 verticalAlign: VerticalAlign.CENTER,
               })
             ),
           }),
-          ...tableRows.map(row => 
+          ...tableRows.map(row =>
             new TableRow({
               children: [
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[0], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })] }),
@@ -639,6 +639,13 @@ const App: React.FC = () => {
     let finalBase64 = fileData?.base64 || "";
     let finalMime = fileData?.mimeType || "text/plain";
 
+    // Handle case without fileData (e.g., SKKN generation from scratch)
+    if (!fileData && activePreset !== 'rewrite' && rewriteStyle !== 'skkn' && !audioChunksRef.current.length) {
+      setError("Vui lòng tải lên tài liệu gốc để xử lý (trừ khi tạo mới SKKN hoặc có ghi âm).");
+      setStatus(AppStatus.ERROR);
+      return;
+    }
+
     if (activePreset === 'rewrite' && rewriteStyle === 'skkn') {
       finalPrompt = `
         BẠN LÀ NHÀ GIÁO NHÂN DÂN - GIÁO SƯ TIẾN SĨ NGÔN NGỮ HỌC VIỆT NAM VỚI 45 NĂM KINH NGHIỆM. 
@@ -693,17 +700,17 @@ const App: React.FC = () => {
 
     try {
       const result = await analyzeContent(
-        finalBase64, 
-        finalMime, 
-        finalPrompt, 
-        (chunk) => setRawOutput(chunk), 
-        activePreset, 
-        userKey, 
+        finalBase64,
+        finalMime,
+        finalPrompt,
+        (chunk) => setRawOutput(chunk),
+        activePreset,
+        userKey,
         rewriteStyle,
         summaryLevel
       );
       setStatus(AppStatus.SUCCESS);
-      
+
       if (activePreset === 'rewrite' && rewriteStyle === 'skkn') {
         await exportToDocx(result, skknData.initiativeName || "Don_yeu_cau_cong_nhan_sang_kien");
       }
@@ -725,7 +732,7 @@ const App: React.FC = () => {
     const ocrMatch = rawOutput.match(/\[OCR_START\]([\s\S]*?)\[OCR_END\]/);
     const rewriteStartMatch = rawOutput.match(/\[REWRITE_START\]([\s\S]*?)(?=\[REWRITE_EXPLANATION\]|\[REWRITE_END\])/);
     const rewriteExplMatch = rawOutput.match(/\[REWRITE_EXPLANATION\]([\s\S]*?)\[REWRITE_END\]/);
-    
+
     const sumHighMatch = rawOutput.match(/\[SUMMARY_HIGHLIGHTS\]([\s\S]*?)\[SUMMARY_CONTENT\]/);
     const sumContMatch = rawOutput.match(/\[SUMMARY_CONTENT\]([\s\S]*?)\[SUMMARY_KEYWORDS\]/);
     const sumKeyMatch = rawOutput.match(/\[SUMMARY_KEYWORDS\]([\s\S]*?)\[SUMMARY_ACTION_ITEMS\]/);
@@ -739,7 +746,7 @@ const App: React.FC = () => {
       .filter(row => row.length >= 6 && !row.some(c => c.includes('---')) && !row.some(c => c.toLowerCase().includes('từ sai') || c.toLowerCase().includes('lỗi logic')));
 
     let reportData = null;
-    if (reportMatch) { try { reportData = JSON.parse(reportMatch[1].trim()); } catch (e) {} }
+    if (reportMatch) { try { reportData = JSON.parse(reportMatch[1].trim()); } catch (e) { } }
 
     return {
       reportData,
@@ -765,7 +772,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-[#F8FAFC] text-slate-800 font-sans overflow-hidden relative">
-      <div 
+      <div
         className={`fixed inset-0 bg-slate-900/50 z-40 transition-opacity lg:hidden ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsSidebarOpen(false)}
       />
@@ -792,7 +799,7 @@ const App: React.FC = () => {
               <a href="https://aistudio.google.com/app/api-keys" target="_blank" rel="noopener noreferrer" className="text-[9px] font-black text-slate-900 hover:underline uppercase tracking-tighter">Get the APK here</a>
             </div>
             <div className="relative">
-              <input 
+              <input
                 type={showKey ? "text" : "password"}
                 value={userKey}
                 onChange={(e) => setUserKey(e.target.value)}
@@ -814,8 +821,8 @@ const App: React.FC = () => {
                 <Upload className="w-3 h-3" /> TÀI LIỆU GỐC
               </label>
             </div>
-            
-            <div 
+
+            <div
               className={`h-28 rounded-[2rem] border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${fileData ? 'border-pink-300 bg-pink-50/30' : 'border-yellow-200 bg-white shadow-inner'}`}
               onClick={() => fileInputRef.current?.click()}
             >
@@ -830,7 +837,7 @@ const App: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-1">
-                   <p className="text-[11px] text-slate-400 font-black uppercase">TẢI TỆP .DOCX / ẢNH</p>
+                  <p className="text-[11px] text-slate-400 font-black uppercase">TẢI TỆP .DOCX / ẢNH</p>
                 </div>
               )}
               <input type="file" ref={fileInputRef} className="hidden" accept="image/*,application/pdf,.docx" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
@@ -841,31 +848,31 @@ const App: React.FC = () => {
             <div className="animate-in fade-in slide-in-from-top-4 duration-300">
               {activePreset === 'summary' && (
                 <div className="grid grid-cols-1 gap-2">
-                    {SUMMARY_LEVELS.map(level => (
-                      <button 
-                        key={level.id}
-                        onClick={() => setSummaryLevel(level.id)}
-                        className={`h-16 rounded-2xl border-2 flex flex-col items-center justify-center transition-all ${summaryLevel === level.id ? 'bg-purple-600 border-purple-600 text-white shadow-lg' : 'bg-white border-slate-100 text-slate-400 hover:border-purple-100'}`}
-                      >
-                        <div className="mb-1">{level.icon}</div>
-                        <span className={`text-[8px] font-black uppercase tracking-tighter text-center leading-tight ${summaryLevel === level.id ? 'text-white' : 'text-slate-400'}`}>{level.label}</span>
-                      </button>
-                    ))}
+                  {SUMMARY_LEVELS.map(level => (
+                    <button
+                      key={level.id}
+                      onClick={() => setSummaryLevel(level.id)}
+                      className={`h-16 rounded-2xl border-2 flex flex-col items-center justify-center transition-all ${summaryLevel === level.id ? 'bg-purple-600 border-purple-600 text-white shadow-lg' : 'bg-white border-slate-100 text-slate-400 hover:border-purple-100'}`}
+                    >
+                      <div className="mb-1">{level.icon}</div>
+                      <span className={`text-[8px] font-black uppercase tracking-tighter text-center leading-tight ${summaryLevel === level.id ? 'text-white' : 'text-slate-400'}`}>{level.label}</span>
+                    </button>
+                  ))}
                 </div>
               )}
 
               {activePreset === 'rewrite' && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {REWRITE_STYLES.map(style => (
-                      <button 
-                        key={style.id}
-                        onClick={() => setRewriteStyle(style.id)}
-                        className={`h-14 rounded-2xl border-2 flex flex-col items-center justify-center transition-all ${rewriteStyle === style.id ? 'bg-blue-600 border-blue-600 text-white shadow-lg' : 'bg-white border-slate-100 text-red-600 hover:border-blue-100'}`}
-                      >
-                        <div className="mb-1">{style.icon}</div>
-                        <span className={`text-[6px] font-black uppercase tracking-tighter text-center leading-tight px-1 ${rewriteStyle === style.id ? 'text-white' : 'text-red-600'}`}>{style.label}</span>
-                      </button>
-                    ))}
+                  {REWRITE_STYLES.map(style => (
+                    <button
+                      key={style.id}
+                      onClick={() => setRewriteStyle(style.id)}
+                      className={`h-14 rounded-2xl border-2 flex flex-col items-center justify-center transition-all ${rewriteStyle === style.id ? 'bg-blue-600 border-blue-600 text-white shadow-lg' : 'bg-white border-slate-100 text-red-600 hover:border-blue-100'}`}
+                    >
+                      <div className="mb-1">{style.icon}</div>
+                      <span className={`text-[6px] font-black uppercase tracking-tighter text-center leading-tight px-1 ${rewriteStyle === style.id ? 'text-white' : 'text-red-600'}`}>{style.label}</span>
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
@@ -873,10 +880,10 @@ const App: React.FC = () => {
             <section className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2">
                 {PRESETS.map(p => (
-                  <button 
-                    key={p.id} 
+                  <button
+                    key={p.id}
                     title={p.label}
-                    onClick={() => { setInputText(p.prompt); setActivePreset(p.id); }} 
+                    onClick={() => { setInputText(p.prompt); setActivePreset(p.id); }}
                     className={`h-14 rounded-2xl border-2 flex flex-col items-center justify-center transition-all group ${activePreset === p.id ? 'bg-pink-600 border-pink-600 text-white shadow-lg' : 'bg-white border-slate-100 text-slate-400 hover:border-pink-100'}`}
                   >
                     <div className="mb-1">{p.icon}</div>
@@ -885,16 +892,20 @@ const App: React.FC = () => {
                 ))}
               </div>
             </section>
-          </div>
 
-          <Button 
-            className={`w-full py-6 rounded-2xl text-[12px] font-black uppercase shadow-xl transition-all active:scale-95 group ${activePreset === 'summary' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-100' : 'bg-slate-700 hover:bg-slate-900'}`} 
-            onClick={handleProcess} 
-            isLoading={status === AppStatus.LOADING} 
-            disabled={!fileData && !(activePreset === 'rewrite' && rewriteStyle === 'skkn')}
-          >
-            BẮT ĐẦU XỬ LÝ <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
+            <Button
+              className={`w-full py-6 rounded-2xl text-[12px] font-black uppercase shadow-xl transition-all active:scale-95 group mb-8 md:mb-10 shrink-0 ${activePreset === 'summary' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-100' :
+                activePreset === 'spellcheck' ? 'bg-pink-600 hover:bg-pink-700 shadow-pink-100' :
+                  'bg-slate-700 hover:bg-slate-900'
+                }`}
+              onClick={handleProcess}
+              isLoading={status === AppStatus.LOADING}
+              disabled={!fileData && !(activePreset === 'rewrite' && rewriteStyle === 'skkn')}
+            >
+              BẮT ĐẦU XỬ LÝ <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <div className="h-4 w-full shrink-0"></div>
+          </div>
         </div>
       </aside>
 
@@ -917,749 +928,749 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 scrollbar-hide shrink-0">
-             {activePreset === 'spellcheck' && parsedData.reportData && (
-                <Button 
-                  onClick={() => exportToDocx(rawOutput, "Bao_cao_hieu_dinh", true, parsedData.tableRows, parsedData.reportData)}
-                  variant="outline" size="sm" className="rounded-full border-slate-200 text-slate-600 px-4 whitespace-nowrap md:px-6 font-bold"
-                >
-                  <Download className="w-4 h-4" /> <span className="hidden md:inline">TẢI FILE WORD</span> ({parsedData.reportData.total_errors} LỖI)
-                </Button>
-             )}
-             {activePreset === 'rewrite' && rawOutput && (
-                <Button 
-                  onClick={() => setShowDiff(!showDiff)}
-                  variant="outline" size="sm" className={`rounded-full px-4 whitespace-nowrap md:px-6 font-bold ${showDiff ? 'bg-blue-50 border-blue-500 text-blue-600' : 'border-slate-200 text-slate-600'}`}
-                >
-                  <RefreshCw className="w-4 h-4" /> {showDiff ? 'ẨN SO SÁNH' : 'SO SÁNH'}
-                </Button>
-             )}
-             {rawOutput && (
-                <Button 
-                  onClick={handleOriginalityCheck}
-                  variant="outline" size="sm" className={`rounded-full px-4 whitespace-nowrap md:px-6 font-bold ${originalityReport ? 'bg-emerald-50 border-emerald-500 text-emerald-600' : 'border-slate-200 text-slate-600'}`}
-                  isLoading={isProcessingOriginality}
-                >
-                  <SearchCheck className="w-4 h-4" /> <span className="hidden md:inline">{originalityReport ? 'CẬP NHẬT ' : 'KIỂM TRA '} NGUYÊN BẢN</span>
-                </Button>
-             )}
-             {rawOutput && activePreset !== 'spellcheck' && (
-               <Button onClick={handleCopy} variant="primary" size="sm" className={`rounded-full text-[10px] font-black px-4 whitespace-nowrap md:px-6 ${copied ? 'bg-emerald-500' : activePreset === 'summary' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-100' : 'bg-blue-600'}`}>
-                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                 {copied ? 'ĐÃ COPY' : 'COPY'}
-               </Button>
-             )}
+            {activePreset === 'spellcheck' && parsedData.reportData && (
+              <Button
+                onClick={() => exportToDocx(rawOutput, "Bao_cao_hieu_dinh", true, parsedData.tableRows, parsedData.reportData)}
+                variant="outline" size="sm" className="rounded-full border-slate-200 text-slate-600 px-4 whitespace-nowrap md:px-6 font-bold"
+              >
+                <Download className="w-4 h-4" /> <span className="hidden md:inline">TẢI FILE WORD</span> ({parsedData.reportData.total_errors} LỖI)
+              </Button>
+            )}
+            {activePreset === 'rewrite' && rawOutput && (
+              <Button
+                onClick={() => setShowDiff(!showDiff)}
+                variant="outline" size="sm" className={`rounded-full px-4 whitespace-nowrap md:px-6 font-bold ${showDiff ? 'bg-blue-50 border-blue-500 text-blue-600' : 'border-slate-200 text-slate-600'}`}
+              >
+                <RefreshCw className="w-4 h-4" /> {showDiff ? 'ẨN SO SÁNH' : 'SO SÁNH'}
+              </Button>
+            )}
+            {rawOutput && (
+              <Button
+                onClick={handleOriginalityCheck}
+                variant="outline" size="sm" className={`rounded-full px-4 whitespace-nowrap md:px-6 font-bold ${originalityReport ? 'bg-emerald-50 border-emerald-500 text-emerald-600' : 'border-slate-200 text-slate-600'}`}
+                isLoading={isProcessingOriginality}
+              >
+                <SearchCheck className="w-4 h-4" /> <span className="hidden md:inline">{originalityReport ? 'CẬP NHẬT ' : 'KIỂM TRA '} NGUYÊN BẢN</span>
+              </Button>
+            )}
+            {rawOutput && activePreset !== 'spellcheck' && (
+              <Button onClick={handleCopy} variant="primary" size="sm" className={`rounded-full text-[10px] font-black px-4 whitespace-nowrap md:px-6 ${copied ? 'bg-emerald-500' : activePreset === 'summary' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-100' : 'bg-blue-600'}`}>
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'ĐÃ COPY' : 'COPY'}
+              </Button>
+            )}
           </div>
         </header>
 
         <div className="flex-grow overflow-y-auto custom-scrollbar p-4 md:p-10 bg-[#F8FAFC]/30">
           {status === AppStatus.IDLE && !(activePreset === 'rewrite' && rewriteStyle === 'skkn') ? (
             <div className="h-full flex flex-col items-center justify-center text-slate-200 animate-in fade-in duration-700">
-               <div className="relative mb-8">
-                  <div className="w-40 h-40 bg-slate-50/50 rounded-full flex items-center justify-center border border-slate-100">
-                    <FileSearch className="w-20 h-20 text-slate-200 stroke-[1]" />
-                  </div>
-               </div>
-               <p className="text-[13px] font-black text-slate-300 uppercase tracking-[0.4em] text-center">CHUYÊN GIA ĐANG ĐỢI TÀI LIỆU...</p>
+              <div className="relative mb-8">
+                <div className="w-40 h-40 bg-slate-50/50 rounded-full flex items-center justify-center border border-slate-100">
+                  <FileSearch className="w-20 h-20 text-slate-200 stroke-[1]" />
+                </div>
+              </div>
+              <p className="text-[13px] font-black text-slate-300 uppercase tracking-[0.4em] text-center">CHUYÊN GIA ĐANG ĐỢI TÀI LIỆU...</p>
             </div>
           ) : status === AppStatus.LOADING && !rawOutput ? (
             <div className="h-full flex flex-col items-center justify-center gap-6">
-               <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
-               <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest animate-pulse">HỆ THỐNG ĐANG TRÍCH XUẤT TRI THỨC...</p>
+              <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
+              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest animate-pulse">HỆ THỐNG ĐANG TRÍCH XUẤT TRI THỨC...</p>
             </div>
           ) : activePreset === 'rewrite' && rewriteStyle === 'skkn' && status !== AppStatus.SUCCESS && status !== AppStatus.LOADING ? (
             <div className="max-w-6xl mx-auto animate-in zoom-in-95 duration-500 pb-12">
-               <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-                  {/* Left Navigation Rail */}
-                  <div className="w-full md:w-64 flex-shrink-0 space-y-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0">
-                     <div className="p-4 mb-4 bg-blue-50 rounded-2xl border border-blue-100 min-w-[200px]">
-                        <h3 className="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-1">Tiến độ soạn thảo</h3>
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+                {/* Left Navigation Rail */}
+                <div className="w-full md:w-64 flex-shrink-0 space-y-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0">
+                  <div className="p-4 mb-4 bg-blue-50 rounded-2xl border border-blue-100 min-w-[200px]">
+                    <h3 className="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-1">Tiến độ soạn thảo</h3>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-grow h-1.5 bg-blue-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${(skknStep / 5) * 100}%` }}></div>
+                      </div>
+                      <span className="text-[10px] font-black text-blue-700">{skknStep}/5</span>
+                    </div>
+                  </div>
+
+                  <div className="flex md:flex-col gap-2 min-w-max md:min-w-0">
+                    {[
+                      { id: 1, label: 'Tác giả', icon: <Users className="w-4 h-4" /> },
+                      { id: 2, label: 'Sáng kiến', icon: <Lightbulb className="w-4 h-4" /> },
+                      { id: 3, label: 'Giải pháp', icon: <Cpu className="w-4 h-4" /> },
+                      { id: 4, label: 'Hiệu quả', icon: <Activity className="w-4 h-4" /> },
+                      { id: 5, label: 'Xuất form', icon: <FileSignature className="w-4 h-4" /> },
+                    ].map((step) => (
+                      <button
+                        key={step.id}
+                        onClick={() => setSkknStep(step.id)}
+                        className={`flex-1 md:w-full flex md:items-center justify-center md:justify-start gap-2 md:gap-3 px-4 py-2 md:py-3 rounded-xl text-[12px] font-bold transition-all ${skknStep === step.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-slate-500 bg-white md:bg-transparent hover:bg-slate-50 border border-slate-100 md:border-transparent'}`}
+                      >
+                        {step.icon}
+                        <span className="hidden md:inline">{step.label}</span>
+                        <span className="md:hidden inline-block">{step.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Main Form Content */}
+                <div className="flex-grow space-y-8">
+                  {skknStep === 1 && (
+                    <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
                         <div className="flex items-center gap-2">
-                           <div className="flex-grow h-1.5 bg-blue-100 rounded-full overflow-hidden">
-                              <div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${(skknStep / 5) * 100}%` }}></div>
-                           </div>
-                           <span className="text-[10px] font-black text-blue-700">{skknStep}/5</span>
+                          <Users className="w-5 h-5 text-blue-600" />
+                          <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Thông tin tác giả</h3>
                         </div>
-                     </div>
-
-                     <div className="flex md:flex-col gap-2 min-w-max md:min-w-0">
-                        {[
-                           { id: 1, label: 'Tác giả', icon: <Users className="w-4 h-4" /> },
-                           { id: 2, label: 'Sáng kiến', icon: <Lightbulb className="w-4 h-4" /> },
-                           { id: 3, label: 'Giải pháp', icon: <Cpu className="w-4 h-4" /> },
-                           { id: 4, label: 'Hiệu quả', icon: <Activity className="w-4 h-4" /> },
-                           { id: 5, label: 'Xuất form', icon: <FileSignature className="w-4 h-4" /> },
-                        ].map((step) => (
-                           <button
-                              key={step.id}
-                              onClick={() => setSkknStep(step.id)}
-                              className={`flex-1 md:w-full flex md:items-center justify-center md:justify-start gap-2 md:gap-3 px-4 py-2 md:py-3 rounded-xl text-[12px] font-bold transition-all ${skknStep === step.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-slate-500 bg-white md:bg-transparent hover:bg-slate-50 border border-slate-100 md:border-transparent'}`}
-                           >
-                              {step.icon}
-                              <span className="hidden md:inline">{step.label}</span>
-                              <span className="md:hidden inline-block">{step.label}</span>
-                           </button>
-                        ))}
-                     </div>
-                  </div>
-
-                  {/* Main Form Content */}
-                  <div className="flex-grow space-y-8">
-                      {skknStep === 1 && (
-                        <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
-                           <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-                              <div className="flex items-center gap-2">
-                                <Users className="w-5 h-5 text-blue-600" />
-                                <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Thông tin tác giả</h3>
-                              </div>
-                               <Button 
-                                 variant={isRecording ? "danger" : "outline"} 
-                                 size="sm" 
-                                 className={`rounded-full px-4 h-9 font-black text-[10px] w-full sm:w-auto transition-all ${isRecording ? 'animate-pulse' : 'border-blue-200 text-blue-600'}`}
-                                 onClick={isRecording ? stopRecording : startRecording}
-                               >
-                                 {isRecording ? <MicOff className="w-3.5 h-3.5 mr-2" /> : <Mic className="w-3.5 h-3.5 mr-2" />}
-                                 {isRecording ? "ĐANG GHI Âm" : "NÓI Ý TƯỞNG"}
-                               </Button>
-                           </div>
-                           <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">HỌ VÀ TÊN</label>
-                                    <input 
-                                       value={skknData.authorName}
-                                       onChange={(e) => setSkknData({...skknData, authorName: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="Nguyễn Văn A" 
-                                    />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NGÀY THÁNG NĂM SINH</label>
-                                    <input 
-                                       value={skknData.authorDOB}
-                                       onChange={(e) => setSkknData({...skknData, authorDOB: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="01/01/1985" 
-                                    />
-                                 </div>
-                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NƠI CÔNG TÁC</label>
-                                    <input 
-                                       value={skknData.authorWorkplace}
-                                       onChange={(e) => setSkknData({...skknData, authorWorkplace: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="Trường TH&THCS Bãi Thơm" 
-                                    />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">CHỨC DANH</label>
-                                    <input 
-                                       value={skknData.authorTitle}
-                                       onChange={(e) => setSkknData({...skknData, authorTitle: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="Giáo viên" 
-                                    />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TRÌNH ĐỘ CHUYÊN MÔN</label>
-                                    <input 
-                                       value={skknData.authorLevel}
-                                       onChange={(e) => setSkknData({...skknData, authorLevel: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="Cử nhân Sư phạm" 
-                                    />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TỶ LỆ ĐÓNG GÓP (%)</label>
-                                    <input 
-                                       type="number"
-                                       value={skknData.authorContribution}
-                                       onChange={(e) => setSkknData({...skknData, authorContribution: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="100" 
-                                    />
-                                 </div>
-                              </div>
-                           </Card>
-                        </section>
-                     )}
-
-                      {skknStep === 2 && (
-                        <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
-                           <div className="flex items-center gap-3">
-                              <Lightbulb className="w-5 h-5 text-blue-600" />
-                              <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Thông tin sáng kiến</h3>
-                           </div>
-                           <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TÊN SÁNG KIẾN</label>
-                                 <textarea 
-                                    value={skknData.initiativeName}
-                                    onChange={(e) => setSkknData({...skknData, initiativeName: e.target.value})}
-                                    rows={2}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                    placeholder="Nhập tên sáng kiến đầy đủ..." 
-                                 />
-                              </div>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">LĨNH VỰC ÁP DỤNG</label>
-                                    <input 
-                                       value={skknData.applicationField}
-                                       onChange={(e) => setSkknData({...skknData, applicationField: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="Giảng dạy môn Toán..." 
-                                    />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NGÀY ÁP DỤNG LẦN ĐẦU</label>
-                                    <input 
-                                       value={skknData.firstAppliedDate}
-                                       onChange={(e) => setSkknData({...skknData, firstAppliedDate: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="05/09/2025" 
-                                    />
-                                 </div>
-                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">CHỦ ĐẦU TƯ (NẾU CÓ)</label>
-                                    <input 
-                                       value={skknData.investor}
-                                       onChange={(e) => setSkknData({...skknData, investor: e.target.value})}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                       placeholder="Trường TH&THCS Bãi Thơm" 
-                                    />
-                                 </div>
-                              </div>
-                           </Card>
-                        </section>
-                     )}
-
-                      {skknStep === 3 && (
-                        <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
-                           <div className="flex items-center gap-3">
-                              <Cpu className="w-5 h-5 text-blue-600" />
-                              <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Nội dung giải pháp</h3>
-                           </div>
-                           <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TÌNH TRẠNG GIẢI PHÁP ĐÃ BIẾT</label>
-                                 <textarea 
-                                    value={skknData.currentState}
-                                    onChange={(e) => setSkknData({...skknData, currentState: e.target.value})}
-                                    rows={3}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                    placeholder="Mô tả hiện trạng, ưu điểm và hạn chế của giải pháp cũ..." 
-                                 />
-                              </div>
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">MỤC ĐÍCH CỦA GIẢI PHÁP</label>
-                                 <textarea 
-                                    value={skknData.purpose}
-                                    onChange={(e) => setSkknData({...skknData, purpose: e.target.value})}
-                                    rows={2}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                    placeholder="Giải quyết vấn đề gì? Đạt được kết quả gì?" 
-                                 />
-                              </div>
-                              <div className="space-y-4">
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NỘI DUNG GIẢI PHÁP 1</label>
-                                    <textarea 
-                                       value={skknData.solution1}
-                                       onChange={(e) => setSkknData({...skknData, solution1: e.target.value})}
-                                       rows={3}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                       placeholder="Chi tiết giải pháp 1..." 
-                                    />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NỘI DUNG GIẢI PHÁP 2</label>
-                                    <textarea 
-                                       value={skknData.solution2}
-                                       onChange={(e) => setSkknData({...skknData, solution2: e.target.value})}
-                                       rows={3}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                       placeholder="Chi tiết giải pháp 2..." 
-                                    />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NỘI DUNG GIẢI PHÁP 3</label>
-                                    <textarea 
-                                       value={skknData.solution3}
-                                       onChange={(e) => setSkknData({...skknData, solution3: e.target.value})}
-                                       rows={3}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                       placeholder="Chi tiết giải pháp 3..." 
-                                    />
-                                 </div>
-                              </div>
-                              <div className="pt-2">
-                                 <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    className="rounded-xl text-[10px] font-black border-blue-200 text-blue-600"
-                                    onClick={() => setSkknData({...skknData, solution1: "AI đang gợi ý giải pháp...", solution2: "AI đang gợi ý giải pháp...", solution3: "AI đang gợi ý giải pháp..."})}
-                                 >
-                                    <Sparkles className="w-3 h-3 mr-2" /> VIẾT GIẢI PHÁP (AI)
-                                 </Button>
-                              </div>
-                           </Card>
-                        </section>
-                     )}
-
-                      {skknStep === 4 && (
-                        <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
-                           <div className="flex items-center gap-3">
-                              <Activity className="w-5 h-5 text-blue-600" />
-                              <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Hiệu quả & Khả năng áp dụng</h3>
-                           </div>
-                           <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">KHẢ NĂNG ÁP DỤNG</label>
-                                 <textarea 
-                                    value={skknData.applicability}
-                                    onChange={(e) => setSkknData({...skknData, applicability: e.target.value})}
-                                    rows={3}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                    placeholder="Đối tượng áp dụng, phạm vi áp dụng..." 
-                                 />
-                              </div>
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">HIỆU QUẢ - LỢI ÍCH THU ĐƯỢC</label>
-                                 <textarea 
-                                    value={skknData.benefits}
-                                    onChange={(e) => setSkknData({...skknData, benefits: e.target.value})}
-                                    rows={3}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                    placeholder="So sánh trước và sau, hiệu quả kinh tế - xã hội..." 
-                                 />
-                              </div>
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">ĐIỀU KIỆN ÁP DỤNG</label>
-                                 <textarea 
-                                    value={skknData.conditions}
-                                    onChange={(e) => setSkknData({...skknData, conditions: e.target.value})}
-                                    rows={2}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none" 
-                                    placeholder="Cơ sở vật chất, con người cần thiết..." 
-                                 />
-                              </div>
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">THÔNG TIN CẦN BẢO MẬT (NẾU CÓ)</label>
-                                  <input 
-                                     value={skknData.confidentialInfo}
-                                     onChange={(e) => setSkknData({...skknData, confidentialInfo: e.target.value})}
-                                     className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all" 
-                                     placeholder="Nội dung cần bảo mật..." 
-                                  />
-                               </div>
-                               <div className="flex flex-col md:flex-row gap-2 pt-2 w-full">
-                                  <Button 
-                                     variant="outline" 
-                                     size="sm" 
-                                     className={`w-full rounded-xl text-[10px] font-black transition-all duration-500 ${tableGenerated ? 'bg-emerald-50 border-emerald-500 text-emerald-700' : 'border-emerald-200 text-emerald-600'}`}
-                                     onClick={() => {
-                                       setSkknData({...skknData, benefits: "AI đang sinh bảng số liệu..."});
-                                       setTableGenerated(true);
-                                       setTimeout(() => setTableGenerated(false), 3000);
-                                    }}
-                                 >
-                                    {tableGenerated ? <CheckCircle2 className="w-3 h-3 mr-2 animate-bounce" /> : <TableIcon className="w-3 h-3 mr-2" />}
-                                    {tableGenerated ? "ĐÃ THIẾT LẬP BẢNG" : "SINH BẢNG SỐ LIỆU"}
-                                 </Button>
-                                  <Button 
-                                     variant="outline" 
-                                     size="sm" 
-                                     className={`w-full rounded-xl text-[10px] font-black transition-all duration-500 ${reviewGenerated ? 'bg-purple-50 border-purple-500 text-purple-700' : 'border-purple-200 text-purple-600'}`}
-                                     onClick={() => {
-                                       setSkknData({...skknData, benefits: "AI đang viết đánh giá..."});
-                                       setReviewGenerated(true);
-                                       setTimeout(() => setReviewGenerated(false), 3000);
-                                    }}
-                                 >
-                                    {reviewGenerated ? <CheckCircle2 className="w-3 h-3 mr-2 animate-bounce" /> : <Pen className="w-3 h-3 mr-2" />}
-                                    {reviewGenerated ? "ĐÃ SOẠN ĐÁNH GIÁ" : "VIẾT ĐÁNH GIÁ HIỆU QUẢ"}
-                                 </Button>
-                              </div>
-                           </Card>
-                        </section>
-                     )}
-
-                      {skknStep === 5 && (
-                        <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
-                           <div className="flex items-center gap-3">
-                              <FileSignature className="w-5 h-5 text-blue-600" />
-                              <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Hoàn thiện & Xuất đơn</h3>
-                           </div>
-                           <Card className="p-6 md:p-10 flex flex-col items-center justify-center text-center gap-6 border-blue-50">
-                              <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
-                                 <CheckCircle2 className="w-10 h-10 text-blue-500" />
-                              </div>
-                              <div className="space-y-2">
-                                 <h4 className="text-[18px] font-black text-slate-800 uppercase">Sẵn sàng khởi tạo đơn</h4>
-                                 <p className="text-[13px] text-slate-500 font-medium max-w-md">
-                                    Hệ thống AI sẽ dựa trên thông tin bạn đã cung cấp để soạn thảo một lá đơn yêu cầu công nhận sáng kiến hoàn chỉnh đúng mẫu 2026.
-                                 </p>
-                              </div>
-                              
-                              <div className="flex flex-col w-full max-w-sm gap-3">
-                                 <Button 
-                                    variant="outline"
-                                    className="w-full py-4 rounded-2xl border-slate-200 text-slate-600 text-[12px] font-black uppercase"
-                                    onClick={handleLogicCheck}
-                                    isLoading={isProcessingLogic}
-                                 >
-                                    <ShieldCheck className="w-4 h-4 mr-2" /> {logicCheckResult ? 'CẬP NHẬT KIỂM TRA LOGIC' : 'KIỂM TRA LOGIC HÀNH CHÍNH'}
-                                 </Button>
-                                 
-                                 {logicCheckResult && (
-                                   <div className="p-4 bg-white border border-blue-100 rounded-2xl text-left space-y-2 animate-in fade-in slide-in-from-top-2">
-                                     <div className="flex items-center justify-between">
-                                       <span className="text-[10px] font-black text-blue-600 uppercase">ĐIỂM LOGIC: {logicCheckResult.score}/100</span>
-                                       {logicCheckResult.isConsistent ? <CheckCircle className="w-4 h-4 text-emerald-500" /> : <ShieldAlert className="w-4 h-4 text-amber-500" />}
-                                     </div>
-                                     <p className="text-[11px] text-slate-600 font-medium">{logicCheckResult.analysis}</p>
-                                     <div className="space-y-1">
-                                       {logicCheckResult.recommendations.map((rec, i) => (
-                                         <div key={i} className="text-[10px] text-blue-700 font-bold flex gap-1">
-                                           <span>→</span> {rec}
-                                         </div>
-                                       ))}
-                                     </div>
-                                   </div>
-                                 )}
-                                 <Button 
-                                    className="w-full py-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-[14px] font-black uppercase shadow-xl transition-all group"
-                                    onClick={handleProcess}
-                                 >
-                                    <Cpu className="w-5 h-5 group-hover:animate-pulse" /> HOÀN THIỆN TOÀN BỘ ĐƠN
-                                 </Button>
-                                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
-                                    AI sẽ tự động bổ sung các phần còn thiếu dựa trên dữ liệu bạn đã nhập
-                                 </p>
-                              </div>
-                           </Card>
-                        </section>
-                     )}
-
-                      <div className="flex justify-between items-center pt-4">
-                        <Button 
-                           variant="outline"
-                           className="hidden sm:inline-flex rounded-xl px-8"
-                           onClick={() => setSkknStep(Math.max(1, skknStep - 1))}
-                           disabled={skknStep === 1}
+                        <Button
+                          variant={isRecording ? "danger" : "outline"}
+                          size="sm"
+                          className={`rounded-full px-4 h-9 font-black text-[10px] w-full sm:w-auto transition-all ${isRecording ? 'animate-pulse' : 'border-blue-200 text-blue-600'}`}
+                          onClick={isRecording ? stopRecording : startRecording}
                         >
-                           Trở lại
+                          {isRecording ? <MicOff className="w-3.5 h-3.5 mr-2" /> : <Mic className="w-3.5 h-3.5 mr-2" />}
+                          {isRecording ? "ĐANG GHI Âm" : "NÓI Ý TƯỞNG"}
                         </Button>
-                        <div className="flex gap-2 w-full justify-between sm:w-auto">
-                           {skknStep === 1 && (
-                              <Button 
-                                variant="outline"
-                                className="sm:hidden rounded-xl px-4"
-                                disabled
-                              >
-                                 Trở lại
-                              </Button>
-                           )}
-                           {skknStep > 1 && (
-                              <Button 
-                                variant="outline"
-                                className="sm:hidden rounded-xl px-4"
-                                onClick={() => setSkknStep(Math.max(1, skknStep - 1))}
-                              >
-                                 Quay lại
-                              </Button>
-                           )}
-                           {skknStep < 5 && (
-                              <>
-                                 <Button 
-                                    variant="ghost"
-                                    className="hidden sm:inline-flex rounded-xl px-6 text-blue-600 font-bold hover:bg-blue-50"
-                                    onClick={handleProcess}
-                                 >
-                                    <Cpu className="w-4 h-4 mr-2" /> Hoàn thiện ngay
-                                 </Button>
-                                 <Button 
-                                    className="rounded-xl px-6 sm:px-8 bg-slate-800 text-white flex-1 sm:flex-none"
-                                    onClick={() => setSkknStep(Math.min(5, skknStep + 1))}
-                                 >
-                                    Tiếp theo
-                                 </Button>
-                              </>
-                           )}
+                      </div>
+                      <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">HỌ VÀ TÊN</label>
+                            <input
+                              value={skknData.authorName}
+                              onChange={(e) => setSkknData({ ...skknData, authorName: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="Nguyễn Văn A"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NGÀY THÁNG NĂM SINH</label>
+                            <input
+                              value={skknData.authorDOB}
+                              onChange={(e) => setSkknData({ ...skknData, authorDOB: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="01/01/1985"
+                            />
+                          </div>
+                          <div className="space-y-2 md:col-span-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NƠI CÔNG TÁC</label>
+                            <input
+                              value={skknData.authorWorkplace}
+                              onChange={(e) => setSkknData({ ...skknData, authorWorkplace: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="Trường TH&THCS Bãi Thơm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">CHỨC DANH</label>
+                            <input
+                              value={skknData.authorTitle}
+                              onChange={(e) => setSkknData({ ...skknData, authorTitle: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="Giáo viên"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TRÌNH ĐỘ CHUYÊN MÔN</label>
+                            <input
+                              value={skknData.authorLevel}
+                              onChange={(e) => setSkknData({ ...skknData, authorLevel: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="Cử nhân Sư phạm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TỶ LỆ ĐÓNG GÓP (%)</label>
+                            <input
+                              type="number"
+                              value={skknData.authorContribution}
+                              onChange={(e) => setSkknData({ ...skknData, authorContribution: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="100"
+                            />
+                          </div>
                         </div>
-                     </div>
+                      </Card>
+                    </section>
+                  )}
+
+                  {skknStep === 2 && (
+                    <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3">
+                        <Lightbulb className="w-5 h-5 text-blue-600" />
+                        <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Thông tin sáng kiến</h3>
+                      </div>
+                      <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TÊN SÁNG KIẾN</label>
+                          <textarea
+                            value={skknData.initiativeName}
+                            onChange={(e) => setSkknData({ ...skknData, initiativeName: e.target.value })}
+                            rows={2}
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                            placeholder="Nhập tên sáng kiến đầy đủ..."
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">LĨNH VỰC ÁP DỤNG</label>
+                            <input
+                              value={skknData.applicationField}
+                              onChange={(e) => setSkknData({ ...skknData, applicationField: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="Giảng dạy môn Toán..."
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NGÀY ÁP DỤNG LẦN ĐẦU</label>
+                            <input
+                              value={skknData.firstAppliedDate}
+                              onChange={(e) => setSkknData({ ...skknData, firstAppliedDate: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="05/09/2025"
+                            />
+                          </div>
+                          <div className="space-y-2 md:col-span-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">CHỦ ĐẦU TƯ (NẾU CÓ)</label>
+                            <input
+                              value={skknData.investor}
+                              onChange={(e) => setSkknData({ ...skknData, investor: e.target.value })}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                              placeholder="Trường TH&THCS Bãi Thơm"
+                            />
+                          </div>
+                        </div>
+                      </Card>
+                    </section>
+                  )}
+
+                  {skknStep === 3 && (
+                    <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3">
+                        <Cpu className="w-5 h-5 text-blue-600" />
+                        <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Nội dung giải pháp</h3>
+                      </div>
+                      <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">TÌNH TRẠNG GIẢI PHÁP ĐÃ BIẾT</label>
+                          <textarea
+                            value={skknData.currentState}
+                            onChange={(e) => setSkknData({ ...skknData, currentState: e.target.value })}
+                            rows={3}
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                            placeholder="Mô tả hiện trạng, ưu điểm và hạn chế của giải pháp cũ..."
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">MỤC ĐÍCH CỦA GIẢI PHÁP</label>
+                          <textarea
+                            value={skknData.purpose}
+                            onChange={(e) => setSkknData({ ...skknData, purpose: e.target.value })}
+                            rows={2}
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                            placeholder="Giải quyết vấn đề gì? Đạt được kết quả gì?"
+                          />
+                        </div>
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NỘI DUNG GIẢI PHÁP 1</label>
+                            <textarea
+                              value={skknData.solution1}
+                              onChange={(e) => setSkknData({ ...skknData, solution1: e.target.value })}
+                              rows={3}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                              placeholder="Chi tiết giải pháp 1..."
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NỘI DUNG GIẢI PHÁP 2</label>
+                            <textarea
+                              value={skknData.solution2}
+                              onChange={(e) => setSkknData({ ...skknData, solution2: e.target.value })}
+                              rows={3}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                              placeholder="Chi tiết giải pháp 2..."
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">NỘI DUNG GIẢI PHÁP 3</label>
+                            <textarea
+                              value={skknData.solution3}
+                              onChange={(e) => setSkknData({ ...skknData, solution3: e.target.value })}
+                              rows={3}
+                              className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                              placeholder="Chi tiết giải pháp 3..."
+                            />
+                          </div>
+                        </div>
+                        <div className="pt-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="rounded-xl text-[10px] font-black border-blue-200 text-blue-600"
+                            onClick={() => setSkknData({ ...skknData, solution1: "AI đang gợi ý giải pháp...", solution2: "AI đang gợi ý giải pháp...", solution3: "AI đang gợi ý giải pháp..." })}
+                          >
+                            <Sparkles className="w-3 h-3 mr-2" /> VIẾT GIẢI PHÁP (AI)
+                          </Button>
+                        </div>
+                      </Card>
+                    </section>
+                  )}
+
+                  {skknStep === 4 && (
+                    <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3">
+                        <Activity className="w-5 h-5 text-blue-600" />
+                        <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Hiệu quả & Khả năng áp dụng</h3>
+                      </div>
+                      <Card className="p-4 md:p-8 space-y-4 md:space-y-6 border-blue-50">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">KHẢ NĂNG ÁP DỤNG</label>
+                          <textarea
+                            value={skknData.applicability}
+                            onChange={(e) => setSkknData({ ...skknData, applicability: e.target.value })}
+                            rows={3}
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                            placeholder="Đối tượng áp dụng, phạm vi áp dụng..."
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">HIỆU QUẢ - LỢI ÍCH THU ĐƯỢC</label>
+                          <textarea
+                            value={skknData.benefits}
+                            onChange={(e) => setSkknData({ ...skknData, benefits: e.target.value })}
+                            rows={3}
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                            placeholder="So sánh trước và sau, hiệu quả kinh tế - xã hội..."
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">ĐIỀU KIỆN ÁP DỤNG</label>
+                          <textarea
+                            value={skknData.conditions}
+                            onChange={(e) => setSkknData({ ...skknData, conditions: e.target.value })}
+                            rows={2}
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-medium text-slate-600 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all resize-none"
+                            placeholder="Cơ sở vật chất, con người cần thiết..."
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest">THÔNG TIN CẦN BẢO MẬT (NẾU CÓ)</label>
+                          <input
+                            value={skknData.confidentialInfo}
+                            onChange={(e) => setSkknData({ ...skknData, confidentialInfo: e.target.value })}
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[14px] font-bold text-slate-700 outline-none focus:bg-white focus:ring-2 focus:ring-blue-50 transition-all"
+                            placeholder="Nội dung cần bảo mật..."
+                          />
+                        </div>
+                        <div className="flex flex-col md:flex-row gap-2 pt-2 w-full">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className={`w-full rounded-xl text-[10px] font-black transition-all duration-500 ${tableGenerated ? 'bg-emerald-50 border-emerald-500 text-emerald-700' : 'border-emerald-200 text-emerald-600'}`}
+                            onClick={() => {
+                              setSkknData({ ...skknData, benefits: "AI đang sinh bảng số liệu..." });
+                              setTableGenerated(true);
+                              setTimeout(() => setTableGenerated(false), 3000);
+                            }}
+                          >
+                            {tableGenerated ? <CheckCircle2 className="w-3 h-3 mr-2 animate-bounce" /> : <TableIcon className="w-3 h-3 mr-2" />}
+                            {tableGenerated ? "ĐÃ THIẾT LẬP BẢNG" : "SINH BẢNG SỐ LIỆU"}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className={`w-full rounded-xl text-[10px] font-black transition-all duration-500 ${reviewGenerated ? 'bg-purple-50 border-purple-500 text-purple-700' : 'border-purple-200 text-purple-600'}`}
+                            onClick={() => {
+                              setSkknData({ ...skknData, benefits: "AI đang viết đánh giá..." });
+                              setReviewGenerated(true);
+                              setTimeout(() => setReviewGenerated(false), 3000);
+                            }}
+                          >
+                            {reviewGenerated ? <CheckCircle2 className="w-3 h-3 mr-2 animate-bounce" /> : <Pen className="w-3 h-3 mr-2" />}
+                            {reviewGenerated ? "ĐÃ SOẠN ĐÁNH GIÁ" : "VIẾT ĐÁNH GIÁ HIỆU QUẢ"}
+                          </Button>
+                        </div>
+                      </Card>
+                    </section>
+                  )}
+
+                  {skknStep === 5 && (
+                    <section className="space-y-4 md:space-y-6 animate-in slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3">
+                        <FileSignature className="w-5 h-5 text-blue-600" />
+                        <h3 className="text-[14px] md:text-[16px] font-black text-slate-800 uppercase tracking-tight">Hoàn thiện & Xuất đơn</h3>
+                      </div>
+                      <Card className="p-6 md:p-10 flex flex-col items-center justify-center text-center gap-6 border-blue-50">
+                        <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
+                          <CheckCircle2 className="w-10 h-10 text-blue-500" />
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="text-[18px] font-black text-slate-800 uppercase">Sẵn sàng khởi tạo đơn</h4>
+                          <p className="text-[13px] text-slate-500 font-medium max-w-md">
+                            Hệ thống AI sẽ dựa trên thông tin bạn đã cung cấp để soạn thảo một lá đơn yêu cầu công nhận sáng kiến hoàn chỉnh đúng mẫu 2026.
+                          </p>
+                        </div>
+
+                        <div className="flex flex-col w-full max-w-sm gap-3">
+                          <Button
+                            variant="outline"
+                            className="w-full py-4 rounded-2xl border-slate-200 text-slate-600 text-[12px] font-black uppercase"
+                            onClick={handleLogicCheck}
+                            isLoading={isProcessingLogic}
+                          >
+                            <ShieldCheck className="w-4 h-4 mr-2" /> {logicCheckResult ? 'CẬP NHẬT KIỂM TRA LOGIC' : 'KIỂM TRA LOGIC HÀNH CHÍNH'}
+                          </Button>
+
+                          {logicCheckResult && (
+                            <div className="p-4 bg-white border border-blue-100 rounded-2xl text-left space-y-2 animate-in fade-in slide-in-from-top-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-black text-blue-600 uppercase">ĐIỂM LOGIC: {logicCheckResult.score}/100</span>
+                                {logicCheckResult.isConsistent ? <CheckCircle className="w-4 h-4 text-emerald-500" /> : <ShieldAlert className="w-4 h-4 text-amber-500" />}
+                              </div>
+                              <p className="text-[11px] text-slate-600 font-medium">{logicCheckResult.analysis}</p>
+                              <div className="space-y-1">
+                                {logicCheckResult.recommendations.map((rec, i) => (
+                                  <div key={i} className="text-[10px] text-blue-700 font-bold flex gap-1">
+                                    <span>→</span> {rec}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <Button
+                            className="w-full py-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-[14px] font-black uppercase shadow-xl transition-all group"
+                            onClick={handleProcess}
+                          >
+                            <Cpu className="w-5 h-5 group-hover:animate-pulse" /> HOÀN THIỆN TOÀN BỘ ĐƠN
+                          </Button>
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+                            AI sẽ tự động bổ sung các phần còn thiếu dựa trên dữ liệu bạn đã nhập
+                          </p>
+                        </div>
+                      </Card>
+                    </section>
+                  )}
+
+                  <div className="flex justify-between items-center pt-4">
+                    <Button
+                      variant="outline"
+                      className="hidden sm:inline-flex rounded-xl px-8"
+                      onClick={() => setSkknStep(Math.max(1, skknStep - 1))}
+                      disabled={skknStep === 1}
+                    >
+                      Trở lại
+                    </Button>
+                    <div className="flex gap-2 w-full justify-between sm:w-auto">
+                      {skknStep === 1 && (
+                        <Button
+                          variant="outline"
+                          className="sm:hidden rounded-xl px-4"
+                          disabled
+                        >
+                          Trở lại
+                        </Button>
+                      )}
+                      {skknStep > 1 && (
+                        <Button
+                          variant="outline"
+                          className="sm:hidden rounded-xl px-4"
+                          onClick={() => setSkknStep(Math.max(1, skknStep - 1))}
+                        >
+                          Quay lại
+                        </Button>
+                      )}
+                      {skknStep < 5 && (
+                        <>
+                          <Button
+                            variant="ghost"
+                            className="hidden sm:inline-flex rounded-xl px-6 text-blue-600 font-bold hover:bg-blue-50"
+                            onClick={handleProcess}
+                          >
+                            <Cpu className="w-4 h-4 mr-2" /> Hoàn thiện ngay
+                          </Button>
+                          <Button
+                            className="rounded-xl px-6 sm:px-8 bg-slate-800 text-white flex-1 sm:flex-none"
+                            onClick={() => setSkknStep(Math.min(5, skknStep + 1))}
+                          >
+                            Tiếp theo
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </div>
-               </div>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="max-w-7xl mx-auto space-y-10">
-               {fileData && fileData.mimeType.startsWith('image/') && (
-                 <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm relative group">
-                    <div className="flex items-center gap-3 mb-4 text-slate-400 font-black text-[10px] uppercase tracking-widest">
-                       <ImageIcon className="w-4 h-4" /> ẢNH TÀI LIỆU GỐC
-                    </div>
-                    <img src={fileData.base64} alt="Original" className="max-h-[300px] w-full object-contain mx-auto rounded-xl" />
-                    <button 
-                      onClick={() => setFileData(null)}
-                      className="absolute top-4 right-4 p-2 bg-red-50 text-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                 </div>
-               )}
+              {fileData && fileData.mimeType.startsWith('image/') && (
+                <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm relative group">
+                  <div className="flex items-center gap-3 mb-4 text-slate-400 font-black text-[10px] uppercase tracking-widest">
+                    <ImageIcon className="w-4 h-4" /> ẢNH TÀI LIỆU GỐC
+                  </div>
+                  <img src={fileData.base64} alt="Original" className="max-h-[300px] w-full object-contain mx-auto rounded-xl" />
+                  <button
+                    onClick={() => setFileData(null)}
+                    className="absolute top-4 right-4 p-2 bg-red-50 text-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
 
-               {activePreset === 'summary' && (parsedData.summaryContent || rawOutput) && (
-                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                       <div className="space-y-6">
-                          <div className="flex items-center gap-3 px-2">
-                             <Star className="w-5 h-5 text-yellow-500" />
-                             <span className="text-[11px] font-black text-purple-700 uppercase tracking-widest">ĐIỂM NHẤN TRI THỨC</span>
+              {activePreset === 'summary' && (parsedData.summaryContent || rawOutput) && (
+                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 px-2">
+                        <Star className="w-5 h-5 text-yellow-500" />
+                        <span className="text-[11px] font-black text-purple-700 uppercase tracking-widest">ĐIỂM NHẤN TRI THỨC</span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4">
+                        {parsedData.summaryHighlights.map((h, i) => (
+                          <div key={i} className="bg-white p-6 rounded-[2rem] border-l-4 border-purple-400 shadow-sm hover:shadow-md transition-all">
+                            <p className="text-[14px] font-bold text-slate-700 leading-relaxed font-serif">{h}</p>
                           </div>
-                          <div className="grid grid-cols-1 gap-4">
-                             {parsedData.summaryHighlights.map((h, i) => (
-                               <div key={i} className="bg-white p-6 rounded-[2rem] border-l-4 border-purple-400 shadow-sm hover:shadow-md transition-all">
-                                  <p className="text-[14px] font-bold text-slate-700 leading-relaxed font-serif">{h}</p>
-                               </div>
-                             ))}
-                             {parsedData.summaryHighlights.length === 0 && (
-                                <div className="bg-white/50 p-6 rounded-[2rem] border border-dashed border-slate-200">
-                                   <p className="text-[12px] text-slate-400 italic font-medium text-center">Hệ thống đang trích lọc điểm nhấn...</p>
-                                </div>
-                             )}
+                        ))}
+                        {parsedData.summaryHighlights.length === 0 && (
+                          <div className="bg-white/50 p-6 rounded-[2rem] border border-dashed border-slate-200">
+                            <p className="text-[12px] text-slate-400 italic font-medium text-center">Hệ thống đang trích lọc điểm nhấn...</p>
                           </div>
-                       </div>
-                       <div className="space-y-6">
-                          <div className="flex items-center gap-3 px-2">
-                             <LayoutDashboard className="w-5 h-5 text-purple-600" />
-                             <span className="text-[11px] font-black text-purple-700 uppercase tracking-widest">NỘI DUNG CHI TIẾT</span>
-                          </div>
-                          <div className="bg-white p-10 rounded-[3rem] border border-purple-50 shadow-xl shadow-purple-100/10 min-h-[400px]">
-                             <p className="text-[18px] text-slate-800 leading-[2] font-serif whitespace-pre-wrap">{parsedData.summaryContent || rawOutput.replace(/\*\*/g, "")}</p>
-                          </div>
-                       </div>
+                        )}
+                      </div>
                     </div>
-                 </div>
-               )}
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 px-2">
+                        <LayoutDashboard className="w-5 h-5 text-purple-600" />
+                        <span className="text-[11px] font-black text-purple-700 uppercase tracking-widest">NỘI DUNG CHI TIẾT</span>
+                      </div>
+                      <div className="bg-white p-10 rounded-[3rem] border border-purple-50 shadow-xl shadow-purple-100/10 min-h-[400px]">
+                        <p className="text-[18px] text-slate-800 leading-[2] font-serif whitespace-pre-wrap">{parsedData.summaryContent || rawOutput.replace(/\*\*/g, "")}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-               {activePreset === 'spellcheck' && (
-                 <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    {!parsedData.reportData && rawOutput && (
-                      <Card className="p-10 rounded-[3rem] border-slate-100 shadow-xl">
-                        <div className="flex items-center gap-3 mb-6">
-                           <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
-                           <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">ĐANG PHÂN TÍCH DỮ LIỆU...</span>
+              {activePreset === 'spellcheck' && (
+                <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                  {!parsedData.reportData && rawOutput && (
+                    <Card className="p-10 rounded-[3rem] border-slate-100 shadow-xl">
+                      <div className="flex items-center gap-3 mb-6">
+                        <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
+                        <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">ĐANG PHÂN TÍCH DỮ LIỆU...</span>
+                      </div>
+                      <div className="whitespace-pre-wrap font-serif text-[16px] text-slate-600 leading-relaxed">
+                        {rawOutput.replace(/\[MARKED_START\]|\[MARKED_END\]|\[TABLE_START\]|\[TABLE_END\]|\[REPORT_START\]|\[REPORT_END\]/g, '')}
+                      </div>
+                    </Card>
+                  )}
+
+                  {parsedData.reportData && (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
+                        <Card className="sm:col-span-1 lg:col-span-2 p-6 md:p-8 rounded-3xl md:rounded-[40px] flex flex-col items-center justify-center text-center gap-2 border-slate-100 shadow-lg shadow-slate-100/50">
+                          <div className="w-10 h-10 md:w-12 md:h-12 bg-red-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-1 md:mb-2">
+                            <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-500" />
+                          </div>
+                          <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">TỔNG SỐ<br className="hidden md:block" />LỖI</span>
+                          <span className="text-[36px] md:text-[48px] font-black text-slate-900 leading-none">{parsedData.reportData.total_errors}</span>
+                        </Card>
+
+                        <Card className="sm:col-span-1 lg:col-span-2 p-6 md:p-8 rounded-3xl md:rounded-[40px] flex flex-col items-center justify-center text-center gap-2 border-slate-100 shadow-lg shadow-slate-100/50">
+                          <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-1 md:mb-2">
+                            <Medal className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
+                          </div>
+                          <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">XẾP LOẠI</span>
+                          <span className="text-[16px] md:text-[18px] font-black text-red-600 uppercase leading-tight px-2 md:px-4">{parsedData.reportData.grade}</span>
+                        </Card>
+
+                        <Card className="sm:col-span-2 lg:col-span-8 p-6 md:p-8 lg:p-12 rounded-3xl md:rounded-[48px] flex flex-col justify-center gap-4 border-slate-100 shadow-xl shadow-slate-200/20 relative overflow-hidden">
+                          <div className="absolute top-0 right-0 p-4 opacity-[0.03]">
+                            <Quote className="w-24 h-24 md:w-40 md:h-40" />
+                          </div>
+                          <div className="flex items-center gap-3 relative z-10">
+                            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                              <School className="w-5 h-5 text-purple-600" />
+                            </div>
+                            <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">GÓC NHÌN CHUYÊN GIA HIỆN TẠI</span>
+                          </div>
+                          <p className="text-[20px] font-bold text-slate-800 italic font-serif leading-relaxed pr-10">
+                            "{parsedData.reportData.expert_summary}"
+                          </p>
+                        </Card>
+                      </div>
+
+                      <Card className="p-6 md:p-10 lg:p-16 rounded-3xl md:rounded-[4rem] border-slate-100 shadow-2xl shadow-blue-100/10 space-y-8 md:space-y-12 bg-white/80 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-4">
+                          <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg shadow-purple-200 shrink-0">
+                            <BookOpenCheck className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                          </div>
+                          <h3 className="text-[16px] md:text-[20px] font-black text-slate-800 uppercase tracking-tight">PHÂN TÍCH SƯ PHẠM</h3>
                         </div>
-                        <div className="whitespace-pre-wrap font-serif text-[16px] text-slate-600 leading-relaxed">
-                          {rawOutput.replace(/\[MARKED_START\]|\[MARKED_END\]|\[TABLE_START\]|\[TABLE_END\]|\[REPORT_START\]|\[REPORT_END\]/g, '')}
+
+                        <div className="space-y-4 md:space-y-8">
+                          <div className="bg-emerald-50/50 border border-emerald-100 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-3 md:space-y-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center shrink-0">
+                                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                              </div>
+                              <span className="text-[11px] md:text-[12px] font-black text-emerald-700 uppercase tracking-widest">ƯU ĐIỂM SÁNG GIÁ</span>
+                            </div>
+                            <p className="text-[15px] md:text-[16px] font-medium text-slate-700 leading-relaxed font-serif md:pl-11">
+                              {parsedData.reportData.detailed_insights.strengths}
+                            </p>
+                          </div>
+
+                          <div className="bg-red-50/50 border border-red-100 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-3 md:space-y-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center shrink-0">
+                                <MessageSquareWarning className="w-4 h-4 text-red-600" />
+                              </div>
+                              <span className="text-[11px] md:text-[12px] font-black text-red-700 uppercase tracking-widest">HẠN CHẾ CẦN LƯU Ý</span>
+                            </div>
+                            <p className="text-[15px] md:text-[16px] font-medium text-slate-700 leading-relaxed font-serif md:pl-11">
+                              {parsedData.reportData.detailed_insights.weaknesses}
+                            </p>
+                          </div>
+
+                          <div className="bg-blue-50/50 border border-blue-100 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-3 md:space-y-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
+                                <Lightbulb className="w-4 h-4 text-blue-600" />
+                              </div>
+                              <span className="text-[11px] md:text-[12px] font-black text-blue-700 uppercase tracking-widest">LỜI KHUYÊN NÂNG TẦM</span>
+                            </div>
+                            <p className="text-[15px] md:text-[16px] font-medium text-slate-700 leading-relaxed font-serif md:pl-11">
+                              {parsedData.reportData.elevation_advice}
+                            </p>
+                          </div>
+
+                          {parsedData.reportData.formatting_analysis && (
+                            <div className="bg-slate-50 border border-slate-200 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-4 md:space-y-6">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 bg-slate-200 rounded-xl flex items-center justify-center shrink-0">
+                                    <Layout className="w-4 h-4 text-slate-600" />
+                                  </div>
+                                  <span className="text-[11px] md:text-[12px] font-black text-slate-700 uppercase tracking-widest">PHÂN TÍCH THỂ THỨC (NĐ 30)</span>
+                                </div>
+                                <div className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest self-start sm:self-auto ${parsedData.reportData.formatting_analysis.status === 'Đạt' ? 'bg-emerald-100 text-emerald-700' :
+                                  parsedData.reportData.formatting_analysis.status === 'Không đạt' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+                                  }`}>
+                                  {parsedData.reportData.formatting_analysis.status}
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pl-11">
+                                <div className="space-y-3">
+                                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">CÁC VẤN ĐỀ PHÁT HIỆN</span>
+                                  <ul className="space-y-2">
+                                    {parsedData.reportData.formatting_analysis.issues.map((issue: string, idx: number) => (
+                                      <li key={idx} className="text-[14px] text-slate-600 font-serif flex gap-2">
+                                        <span className="text-red-400">•</span> {issue}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="space-y-3">
+                                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">ĐỀ XUẤT CHỈNH SỬA</span>
+                                  <ul className="space-y-2">
+                                    {parsedData.reportData.formatting_analysis.recommendations.map((rec: string, idx: number) => (
+                                      <li key={idx} className="text-[14px] text-slate-600 font-serif flex gap-2">
+                                        <span className="text-blue-400">→</span> {rec}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </Card>
-                    )}
-                    
-                    {parsedData.reportData && (
-                      <>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
-                           <Card className="sm:col-span-1 lg:col-span-2 p-6 md:p-8 rounded-3xl md:rounded-[40px] flex flex-col items-center justify-center text-center gap-2 border-slate-100 shadow-lg shadow-slate-100/50">
-                              <div className="w-10 h-10 md:w-12 md:h-12 bg-red-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-1 md:mb-2">
-                                 <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-500" />
-                              </div>
-                              <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">TỔNG SỐ<br className="hidden md:block"/>LỖI</span>
-                              <span className="text-[36px] md:text-[48px] font-black text-slate-900 leading-none">{parsedData.reportData.total_errors}</span>
-                           </Card>
+                    </>
+                  )}
+                </div>
+              )}
 
-                           <Card className="sm:col-span-1 lg:col-span-2 p-6 md:p-8 rounded-3xl md:rounded-[40px] flex flex-col items-center justify-center text-center gap-2 border-slate-100 shadow-lg shadow-slate-100/50">
-                              <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-1 md:mb-2">
-                                 <Medal className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
-                              </div>
-                              <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">XẾP LOẠI</span>
-                              <span className="text-[16px] md:text-[18px] font-black text-red-600 uppercase leading-tight px-2 md:px-4">{parsedData.reportData.grade}</span>
-                           </Card>
+              {activePreset === 'ocr' && (parsedData.ocrText || rawOutput) && (
+                <div className="bg-white p-6 md:p-12 rounded-3xl md:rounded-[48px] border border-slate-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4 md:mb-6 px-2 md:px-4">
+                    <FileType className="w-5 h-5 text-blue-600" />
+                    <span className="text-[10px] md:text-[11px] font-black text-blue-700 uppercase tracking-widest">KẾT QUẢ TRÍCH XUẤT VĂN BẢN</span>
+                  </div>
+                  <div className="bg-[#FFFFFC] border border-slate-100 rounded-2xl md:rounded-3xl p-6 md:p-10 font-serif text-[16px] md:text-[18px] text-slate-800 leading-[2] whitespace-pre-wrap min-h-[500px] overflow-x-auto">
+                    {parsedData.ocrText || rawOutput}
+                  </div>
+                </div>
+              )}
 
-                           <Card className="sm:col-span-2 lg:col-span-8 p-6 md:p-8 lg:p-12 rounded-3xl md:rounded-[48px] flex flex-col justify-center gap-4 border-slate-100 shadow-xl shadow-slate-200/20 relative overflow-hidden">
-                              <div className="absolute top-0 right-0 p-4 opacity-[0.03]">
-                                 <Quote className="w-24 h-24 md:w-40 md:h-40" />
-                              </div>
-                              <div className="flex items-center gap-3 relative z-10">
-                                 <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
-                                   <School className="w-5 h-5 text-purple-600" />
-                                 </div>
-                                 <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">GÓC NHÌN CHUYÊN GIA HIỆN TẠI</span>
-                              </div>
-                              <p className="text-[20px] font-bold text-slate-800 italic font-serif leading-relaxed pr-10">
-                                 "{parsedData.reportData.expert_summary}"
-                              </p>
-                           </Card>
+              {activePreset === 'rewrite' && (parsedData.rewriteText || rawOutput) && (
+                <div className="animate-in fade-in zoom-in-95 duration-700 space-y-6 md:space-y-10">
+                  <div className={rewriteStyle === 'skkn' ? "w-full" : "grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10"}>
+                    {rewriteStyle !== 'skkn' && (
+                      <div className="bg-white border border-slate-100 rounded-3xl md:rounded-[40px] p-6 md:p-10 font-serif text-[16px] text-slate-400 italic shadow-sm md:h-[600px] overflow-y-auto custom-scrollbar relative">
+                        <div className="sticky top-0 bg-white/90 backdrop-blur-sm pb-4 mb-4 flex items-center gap-2">
+                          <FileText className="w-4 h-4 opacity-30 shrink-0" />
+                          <span className="text-[9px] font-black uppercase text-slate-300">VĂN BẢN GỐC</span>
                         </div>
-
-                        <Card className="p-6 md:p-10 lg:p-16 rounded-3xl md:rounded-[4rem] border-slate-100 shadow-2xl shadow-blue-100/10 space-y-8 md:space-y-12 bg-white/80 backdrop-blur-sm">
-                           <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-4">
-                              <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg shadow-purple-200 shrink-0">
-                                 <BookOpenCheck className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                              </div>
-                              <h3 className="text-[16px] md:text-[20px] font-black text-slate-800 uppercase tracking-tight">PHÂN TÍCH SƯ PHẠM</h3>
-                           </div>
-
-                           <div className="space-y-4 md:space-y-8">
-                              <div className="bg-emerald-50/50 border border-emerald-100 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-3 md:space-y-4">
-                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center shrink-0">
-                                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                                    </div>
-                                    <span className="text-[11px] md:text-[12px] font-black text-emerald-700 uppercase tracking-widest">ƯU ĐIỂM SÁNG GIÁ</span>
-                                 </div>
-                                 <p className="text-[15px] md:text-[16px] font-medium text-slate-700 leading-relaxed font-serif md:pl-11">
-                                    {parsedData.reportData.detailed_insights.strengths}
-                                 </p>
-                              </div>
-
-                              <div className="bg-red-50/50 border border-red-100 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-3 md:space-y-4">
-                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center shrink-0">
-                                       <MessageSquareWarning className="w-4 h-4 text-red-600" />
-                                    </div>
-                                    <span className="text-[11px] md:text-[12px] font-black text-red-700 uppercase tracking-widest">HẠN CHẾ CẦN LƯU Ý</span>
-                                 </div>
-                                 <p className="text-[15px] md:text-[16px] font-medium text-slate-700 leading-relaxed font-serif md:pl-11">
-                                    {parsedData.reportData.detailed_insights.weaknesses}
-                                 </p>
-                              </div>
-
-                              <div className="bg-blue-50/50 border border-blue-100 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-3 md:space-y-4">
-                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
-                                       <Lightbulb className="w-4 h-4 text-blue-600" />
-                                    </div>
-                                    <span className="text-[11px] md:text-[12px] font-black text-blue-700 uppercase tracking-widest">LỜI KHUYÊN NÂNG TẦM</span>
-                                 </div>
-                                 <p className="text-[15px] md:text-[16px] font-medium text-slate-700 leading-relaxed font-serif md:pl-11">
-                                    {parsedData.reportData.elevation_advice}
-                                 </p>
-                              </div>
-
-                              {parsedData.reportData.formatting_analysis && (
-                                <div className="bg-slate-50 border border-slate-200 rounded-2xl md:rounded-[2.5rem] p-6 md:p-10 space-y-4 md:space-y-6">
-                                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                      <div className="flex items-center gap-3">
-                                         <div className="w-8 h-8 bg-slate-200 rounded-xl flex items-center justify-center shrink-0">
-                                            <Layout className="w-4 h-4 text-slate-600" />
-                                         </div>
-                                         <span className="text-[11px] md:text-[12px] font-black text-slate-700 uppercase tracking-widest">PHÂN TÍCH THỂ THỨC (NĐ 30)</span>
-                                      </div>
-                                      <div className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest self-start sm:self-auto ${
-                                        parsedData.reportData.formatting_analysis.status === 'Đạt' ? 'bg-emerald-100 text-emerald-700' : 
-                                        parsedData.reportData.formatting_analysis.status === 'Không đạt' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
-                                      }`}>
-                                        {parsedData.reportData.formatting_analysis.status}
-                                      </div>
-                                   </div>
-                                   
-                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pl-11">
-                                      <div className="space-y-3">
-                                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">CÁC VẤN ĐỀ PHÁT HIỆN</span>
-                                         <ul className="space-y-2">
-                                            {parsedData.reportData.formatting_analysis.issues.map((issue: string, idx: number) => (
-                                              <li key={idx} className="text-[14px] text-slate-600 font-serif flex gap-2">
-                                                <span className="text-red-400">•</span> {issue}
-                                              </li>
-                                            ))}
-                                         </ul>
-                                      </div>
-                                      <div className="space-y-3">
-                                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">ĐỀ XUẤT CHỈNH SỬA</span>
-                                         <ul className="space-y-2">
-                                            {parsedData.reportData.formatting_analysis.recommendations.map((rec: string, idx: number) => (
-                                              <li key={idx} className="text-[14px] text-slate-600 font-serif flex gap-2">
-                                                <span className="text-blue-400">→</span> {rec}
-                                              </li>
-                                            ))}
-                                         </ul>
-                                      </div>
-                                   </div>
-                                </div>
-                              )}
-                           </div>
-                        </Card>
-                      </>
+                        <Quote className="w-8 h-8 mb-6 opacity-10 text-slate-900" />
+                        <div className="whitespace-pre-wrap">{fileData?.rawText || "Dữ liệu nguồn..."}</div>
+                      </div>
                     )}
-                 </div>
-               )}
-
-               {activePreset === 'ocr' && (parsedData.ocrText || rawOutput) && (
-                 <div className="bg-white p-6 md:p-12 rounded-3xl md:rounded-[48px] border border-slate-100 shadow-sm">
-                    <div className="flex items-center gap-3 mb-4 md:mb-6 px-2 md:px-4">
-                       <FileType className="w-5 h-5 text-blue-600" />
-                       <span className="text-[10px] md:text-[11px] font-black text-blue-700 uppercase tracking-widest">KẾT QUẢ TRÍCH XUẤT VĂN BẢN</span>
-                    </div>
-                    <div className="bg-[#FFFFFC] border border-slate-100 rounded-2xl md:rounded-3xl p-6 md:p-10 font-serif text-[16px] md:text-[18px] text-slate-800 leading-[2] whitespace-pre-wrap min-h-[500px] overflow-x-auto">
-                       {parsedData.ocrText || rawOutput}
-                    </div>
-                 </div>
-               )}
-
-               {activePreset === 'rewrite' && (parsedData.rewriteText || rawOutput) && (
-                 <div className="animate-in fade-in zoom-in-95 duration-700 space-y-6 md:space-y-10">
-                    <div className={rewriteStyle === 'skkn' ? "w-full" : "grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10"}>
-                        {rewriteStyle !== 'skkn' && (
-                          <div className="bg-white border border-slate-100 rounded-3xl md:rounded-[40px] p-6 md:p-10 font-serif text-[16px] text-slate-400 italic shadow-sm md:h-[600px] overflow-y-auto custom-scrollbar relative">
-                          <div className="sticky top-0 bg-white/90 backdrop-blur-sm pb-4 mb-4 flex items-center gap-2">
-                             <FileText className="w-4 h-4 opacity-30 shrink-0" />
-                             <span className="text-[9px] font-black uppercase text-slate-300">VĂN BẢN GỐC</span>
-                          </div>
-                          <Quote className="w-8 h-8 mb-6 opacity-10 text-slate-900" />
-                          <div className="whitespace-pre-wrap">{fileData?.rawText || "Dữ liệu nguồn..."}</div>
+                    <div className={`bg-white border-2 border-blue-50 shadow-2xl shadow-blue-100/10 rounded-3xl md:rounded-[40px] p-6 md:p-10 font-serif text-[17px] md:text-[19px] text-slate-900 leading-[1.8] ${rewriteStyle === 'skkn' ? 'min-h-[600px] md:min-h-[800px]' : 'md:h-[600px]'} overflow-y-auto custom-scrollbar relative`}>
+                      <div className="sticky top-0 bg-white/90 backdrop-blur-sm pb-4 mb-4 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-blue-500 shrink-0" />
+                          <span className="text-[9px] font-black uppercase text-blue-600">PHIÊN BẢN BIÊN TẬP</span>
                         </div>
+                        {rewriteStyle === 'skkn' && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white border-none text-[10px] font-black px-4 h-8 shadow-lg shadow-blue-200/50 transition-all active:scale-95"
+                            onClick={() => exportToDocx(parsedData.rewriteText || rawOutput, "Don_Yeu_Cau_Cong_Nhan_Sang_Kien")}
+                          >
+                            <Download className="w-3 h-3 mr-2" /> TẢI SKKN (.DOCX)
+                          </Button>
                         )}
-                        <div className={`bg-white border-2 border-blue-50 shadow-2xl shadow-blue-100/10 rounded-3xl md:rounded-[40px] p-6 md:p-10 font-serif text-[17px] md:text-[19px] text-slate-900 leading-[1.8] ${rewriteStyle === 'skkn' ? 'min-h-[600px] md:min-h-[800px]' : 'md:h-[600px]'} overflow-y-auto custom-scrollbar relative`}>
-                          <div className="sticky top-0 bg-white/90 backdrop-blur-sm pb-4 mb-4 flex items-center justify-between">
-                             <div className="flex items-center gap-2">
-                                <Sparkles className="w-4 h-4 text-blue-500 shrink-0" />
-                                <span className="text-[9px] font-black uppercase text-blue-600">PHIÊN BẢN BIÊN TẬP</span>
-                             </div>
-                             {rewriteStyle === 'skkn' && (
-                                <Button 
-                                   size="sm" 
-                                   variant="outline"
-                                   className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white border-none text-[10px] font-black px-4 h-8 shadow-lg shadow-blue-200/50 transition-all active:scale-95"
-                                   onClick={() => exportToDocx(parsedData.rewriteText || rawOutput, "Don_Yeu_Cau_Cong_Nhan_Sang_Kien")}
-                                >
-                                   <Download className="w-3 h-3 mr-2" /> TẢI SKKN (.DOCX)
-                                </Button>
-                             )}
-                          </div>
-                          <div className="markdown-body">
-                             {showDiff ? (
-                                <DiffView oldText={fileData?.rawText || ""} newText={parsedData.rewriteText || rawOutput} />
-                              ) : (
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                {parsedData.rewriteText || rawOutput.replace(/\*\*/g, "")}
-                             </ReactMarkdown>
-                             )}
-                          </div>
-                        </div>
+                      </div>
+                      <div className="markdown-body">
+                        {showDiff ? (
+                          <DiffView oldText={fileData?.rawText || ""} newText={parsedData.rewriteText || rawOutput} />
+                        ) : (
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {parsedData.rewriteText || rawOutput.replace(/\*\*/g, "")}
+                          </ReactMarkdown>
+                        )}
+                      </div>
                     </div>
-                    {parsedData.rewriteExplanation && (
-                       <Card className="p-10 rounded-[3rem] border-slate-100 bg-slate-50/50">
-                          <div className="flex items-center gap-3 mb-4">
-                             <Info className="w-5 h-5 text-blue-500" />
-                             <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">LƯU Ý BIÊN TẬP</span>
-                          </div>
-                          <p className="text-[15px] font-medium text-slate-600 font-serif leading-relaxed italic">{parsedData.rewriteExplanation}</p>
-                       </Card>
-                    )}
-                 </div>
-               )}
+                  </div>
+                  {parsedData.rewriteExplanation && (
+                    <Card className="p-10 rounded-[3rem] border-slate-100 bg-slate-50/50">
+                      <div className="flex items-center gap-3 mb-4">
+                        <Info className="w-5 h-5 text-blue-500" />
+                        <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">LƯU Ý BIÊN TẬP</span>
+                      </div>
+                      <p className="text-[15px] font-medium text-slate-600 font-serif leading-relaxed italic">{parsedData.rewriteExplanation}</p>
+                    </Card>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
 
         <footer className="h-16 bg-white border-t border-slate-50 flex items-center justify-center gap-6">
-           <PeachBlossom className="w-5 h-5" />
-           <p className="text-[11px] font-black tracking-widest text-slate-400 uppercase">TRƯỜNG TH&THCS BÃI THƠM 1994 - 2026</p>
-           <ApricotBlossom className="w-5 h-5" />
+          <PeachBlossom className="w-5 h-5" />
+          <p className="text-[11px] font-black tracking-widest text-slate-400 uppercase">TRƯỜNG TH&THCS BÃI THƠM 1994 - 2026</p>
+          <ApricotBlossom className="w-5 h-5" />
         </footer>
       </main>
 
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
