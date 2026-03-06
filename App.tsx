@@ -843,7 +843,7 @@ const App: React.FC = () => {
             <EduLogo className="w-6 h-6" />
             <div>
               <h1 className="font-black text-slate-900 text-[18px] uppercase tracking-tighter leading-none">VisionScript</h1>
-              <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] mt-1.5 inline-block">BÃI THƠM 09</span>
+              <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.1em] mt-1.5 inline-block">TRƯỜNG TH&THCS BÃI THƠM</span>
             </div>
           </div>
           <button className="lg:hidden text-slate-400 p-2" onClick={() => setIsSidebarOpen(false)}>
