@@ -831,7 +831,15 @@ const App: React.FC = () => {
     const tableRows = tableLines
       .filter(line => line.startsWith('|') && line.includes('|'))
       .map(line => line.split('|').map(cell => cell.trim()).slice(1, -1))
-      .filter(row => row.length >= 6 && !row.some(c => c.includes('---')) && !row.some(c => c.toLowerCase().includes('từ sai') || c.toLowerCase().includes('lỗi logic')));
+      .filter(row => {
+        if (row.length < 6) return false;
+        if (row.some(c => c.includes('---'))) return false;
+        if (row.some(c => c.toLowerCase().includes('từ sai') || c.toLowerCase().includes('lỗi logic'))) return false;
+        // Loại bỏ các "lỗi ảo": Từ sai và Dạng đúng giống hệt nhau (sau khi đã chuẩn hóa dấu câu)
+        const normalize = (val: string) => val.trim().replace(/…/g, '...');
+        if (normalize(row[1]) === normalize(row[4])) return false;
+        return true;
+      });
 
     let reportData = null;
     if (reportMatch) { try { reportData = JSON.parse(reportMatch[1].trim()); } catch (e) { } }
