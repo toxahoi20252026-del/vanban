@@ -566,14 +566,14 @@ const App: React.FC = () => {
           new TableRow({
             children: [
               { text: "STT", width: 5 },
-              { text: "Từ sai/Lỗi logic", width: 10 },
-              { text: "Vị trí (Phần/Mục)", width: 8 },
+              { text: "Từ sai/Lỗi logic", width: 15 },
+              { text: "Vị trí", width: 10 },
               { text: "Đoạn văn chứa lỗi", width: 25 },
-              { text: "Dạng đúng/Đề xuất", width: 10 },
-              { text: "Giải thích lý do", width: 42 }
+              { text: "Dạng đúng/Đề xuất", width: 15 },
+              { text: "Giải thích lý do", width: 30 }
             ].map(col =>
               new TableCell({
-                children: [new Paragraph({ children: [new TextRun({ text: col.text, bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })],
+                children: [new Paragraph({ children: [new TextRun({ text: col.text, bold: true, font: "Times New Roman", size: 24 })], alignment: AlignmentType.CENTER })],
                 verticalAlign: VerticalAlign.CENTER,
                 width: { size: col.width, type: WidthType.PERCENTAGE }
               })
@@ -582,12 +582,12 @@ const App: React.FC = () => {
           ...tableRows.map(row =>
             new TableRow({
               children: [
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[0], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 5, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[1], color: "FF0000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 10, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 8, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 28 })] })], width: { size: 25, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[4], color: "008000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], verticalAlign: VerticalAlign.CENTER, width: { size: 10, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[5], font: "Times New Roman", size: 28 })] })], width: { size: 42, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[0], font: "Times New Roman", size: 24 })], alignment: AlignmentType.CENTER })], width: { size: 5, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[1], color: "FF0000", bold: true, font: "Times New Roman", size: 24 })], alignment: AlignmentType.CENTER })], width: { size: 15, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 24 })], alignment: AlignmentType.CENTER })], width: { size: 10, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 24 })] })], width: { size: 25, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[4], color: "008000", bold: true, font: "Times New Roman", size: 24 })], alignment: AlignmentType.CENTER })], verticalAlign: VerticalAlign.CENTER, width: { size: 15, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[5], font: "Times New Roman", size: 24 })] })], width: { size: 30, type: WidthType.PERCENTAGE } }),
               ],
             })
           ),
@@ -835,8 +835,12 @@ const App: React.FC = () => {
         if (row.length < 6) return false;
         if (row.some(c => c.includes('---'))) return false;
         if (row.some(c => c.toLowerCase().includes('từ sai') || c.toLowerCase().includes('lỗi logic'))) return false;
-        // Loại bỏ các "lỗi ảo": Từ sai và Dạng đúng giống hệt nhau (sau khi đã chuẩn hóa dấu câu)
-        const normalize = (val: string) => val.trim().replace(/…/g, '...');
+        // Loại bỏ các "lỗi ảo": Từ sai và Dạng đúng giống hệt nhau (sau khi đã chuẩn hóa dấu câu và khoảng trắng)
+        const normalize = (val: string) => val.trim()
+          .replace(/…/g, '...')
+          .replace(/[“”]/g, '"')
+          .replace(/[‘’]/g, "'")
+          .replace(/\s+/g, ' ');
         if (normalize(row[1]) === normalize(row[4])) return false;
         return true;
       });

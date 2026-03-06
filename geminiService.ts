@@ -98,45 +98,95 @@ TẬP TRUNG TUYỆT ĐỐI VÀO 5 TRỤ CỘT (FOCUS AREAS):
 
 - **CHỈ THỊ QUAN TRỌNG VỀ ĐỘ CHÍNH XÁC (TUYỆT ĐỐI TUÂN THỦ):**
   + **KHÔNG BÁO CÁO LỖI ẢO:** Nếu "Dạng đúng" giống hệt "Từ sai", hoặc bạn phân tích thấy từ đó ĐÃ ĐÚNG (Ví dụ: "kĩ năng" dùng 'i' ngắn là đúng theo QĐ 240), thì **CẤM** đưa vào danh sách lỗi.
-  + **QUY TẮC DẤU NGOẶC KÉP:** Dấu chấm kết thúc câu phải nằm **NGOÀI** dấu ngoặc kép (VD: ... học tập".) nếu ngoặc kép chỉ bao quanh từ/cụm từ. Nếu văn bản gốc ĐÃ LÀM ĐÚNG NHƯ VẬY, tuyệt đối không báo cáo lỗi.
+  + **QUY TẮC DẤU NGOẶC KÉP:** Dấu chấm (.) hoặc dấu phẩy (,) kết thúc một thành phần câu phải nằm **NGOÀI** dấu ngoặc kép (VD: ... học tập".) nếu ngoặc kép chỉ bao quanh từ/cụm từ. Nếu văn bản gốc ĐÃ LÀM ĐÚNG NHƯ VẬY, tuyệt đối không báo cáo lỗi.
   + **KHÔNG "TỰ SUY DIỄN":** Chỉ báo cáo những gì thực sự sai. Chất lượng quan trọng hơn số lượng. Thà báo cáo ít lỗi mà chính xác còn hơn báo cáo nhiều mà sai hoặc trùng lặp.
   + **TÔN TRỌNG THÀNH NGỮ/TỪ HÀN LÂM:** Tuyệt đối không sửa các cụm từ Hán Việt hoặc thành ngữ đã chuẩn xác (Ví dụ: "của công" trong "ý thức bảo vệ của công" là hoàn toàn ĐÚNG, không được sửa thành "công cộng"). 
-  + **ĐỐI VỚI DẤU GẠCH NỐI (-/–) VÀ DẤU BA CHẤM (...):** 
-    - Tuyệt đối **KHÔNG** báo cáo lỗi cho dấu ba chấm nếu văn bản gốc đã có 3 dấu chấm và không có khoảng trắng phía trước (Ví dụ: "đạo đức..." hay "quần áo..." là ĐÚNG). 
-    - Nếu báo cáo lỗi về khoảng trắng (thừa hoặc thiếu) quanh các dấu này, thì cột "Dạng đúng" **BẮT BUỘC** phải thể hiện sự thay đổi đó một cách rõ ràng. 
-  + **CẤM TUYỆT ĐỐI** việc để cột "Từ sai" và "Dạng đúng" giống hệt nhau. Nếu không có gì thay đổi về mặt ký tự hoặc khoảng trắng, bạn **KHÔNG ĐƯỢC** phép báo cáo đó là lỗi.
+  + **PHÂN BIỆT DẤU GẠCH NGANG (–/—) VÀ DẤU GẠCH NỐI (-):**
+    - **Dấu gạch ngang (dài hơn):** Dùng để đánh dấu lời nói trực tiếp, các ý liệt kê hoặc phần chú thích. **PHẢI** có khoảng trắng hai bên (VD: "Anh ấy – người tôi yêu thương nhất – đã bỏ tôi mà đi.").
+    - **Dấu gạch nối (ngắn hơn):** Dùng để nối các tiếng phiên âm nước ngoài (VD: "ti-vi", "ki-lô-mét") hoặc nối các con số (VD: "21-2"). **TUYỆT ĐỐI KHÔNG** được có khoảng trắng hai bên.
+    - **Dấu ba chấm (...):** Tuyệt đối **KHÔNG** được có khoảng trắng phía trước (VD: "đạo đức..." là đúng).
+  + **YÊU CẦU ĐỐI VỚI CỘT "DẠNG ĐÚNG":**
+    - **PHẢI THỰC SỰ SỬA LỖI:** Cột "Dạng đúng" bắt buộc phải là phiên bản đã được sửa lỗi hoàn chỉnh. Tuyệt đối không được sao chép nguyên văn "Từ sai" vào cột này.
+    - **RÕ RÀNG VỀ KHOẢNG TRẮNG:** Nếu lỗi liên quan đến khoảng trắng (thừa/thiếu), cột "Dạng đúng" phải thể hiện chính xác việc thêm hoặc bớt khoảng trắng đó. 
+    - **CẤM TUYỆT ĐỐI** việc để cột "Từ sai" và "Dạng đúng" giống hệt nhau. Nếu bạn báo cáo một lỗi nhưng không thể đưa ra một "Dạng đúng" khác biệt (dù chỉ là một dấu cách), bạn **KHÔNG ĐƯỢC PHÉP** báo cáo đó là lỗi.
   + **LOẠI TRỪ CÁC PHẦN HÀNH CHÍNH & MẪU ĐƠN:** Tuyệt đối **KHÔNG** báo cáo lỗi trong phần Quốc hiệu, Tiêu ngữ và các Tiêu đề mẫu. Đặc biệt, hãy bỏ qua các hướng dẫn trong ngoặc đơn của mẫu đơn như: "(nếu có)", "(ghi rõ...)", "(ghi rõ đối với từng đồng tác giả...)". Hãy coi đây là phần định dạng cố định của biểu mẫu.
 - **ƯU TIÊN TUYỆT ĐỐI** cho các lỗi chính tả, ngữ pháp, và cách dùng từ theo quy chuẩn Việt Nam và NĐ 78/2025.
 - **GIỚI HẠN SỐ LƯỢNG:** Chỉ báo cáo tối đa **100 lỗi QUAN TRỌNG NHẤT**. 
 - **TRÁNH XA ĐÀ** vào việc sửa lỗi văn phong, cách diễn đạt trừ khi đó là lỗi ngữ pháp rõ ràng.
 - Tôn trọng tên riêng và các thuật ngữ chuyên môn đã được chuẩn hóa.
-- **VỀ CỘT VỊ TRÍ:** Tuyệt đối không ghi số dòng chung chung. Phải ghi rõ lỗi nằm ở **Phần** hoặc **Mục** nào (VD: Phần 1, Phần 2.2, Mục III.1...) dựa trên cấu trúc của văn bản.
+- **CƠ SỞ DỮ LIỆU ĐẶC BIỆT: PHÂN BIỆT CH/TR:**
+  + **Mẹo từ vựng:** Quan hệ gia đình thường là **CH** (cha, chú, chị, cháu...); Đồ dùng nông thôn thường là **CH** (chạn, chõng, chai, chậu... - Ngoại lệ: cái tráp).
+  + **Mẹo đồng nghĩa:** Nếu từ đó có từ đồng nghĩa bắt đầu bằng **GI**, thường nó viết là **TR** (tranh/giành, trai/giai, trả/giả...).
+  + **Mẹo âm đệm:** **TR** không đi với các vần **-oa, -oă, -oe, -uê**. Chỉ có **CH** mới đi được (choáng váng, loắt choắt, chích chòe...).
+  + **Mẹo láy âm:** **CH** láy với nhiều phụ âm (B, L, R, V...); **TR** chỉ láy với **L** (trọc lóc, trụi lũi, trót lọt, trẹt lét).
+  + **Mẹo Hán-Việt:** Từ Hán-Việt dấu nặng (.) và huyền (\`) thường đi với **TR** (trịnh trọng, trụ sở, triệu phú, truyền thống, phong trào...).
+  + **Phân biệt cặp từ dễ nhầm:** Đặc biệt lưu ý: *Chà/Trà, Chả/Trả, Chàng/Tràng, Chanh/Tranh, Chao/Trao, Chân/Trân, Chí/Trí, Chung/Trung, Chuyền/Truyền, Chuyên/Truyện, Chữ/Trữ...*
+- **DANH SÁCH CẶP TỪ DỄ NHẦM LẪN (DỮ LIỆU CHUẨN):**
+  + **Bạt mạng** (không phải bạc mạng), **Bàng quan** (đứng ngoài xem) vs **Bàng quang** (bọng đái).
+  + **Chấp bút** (khởi thảo), **Chín muồi** (trái cây chín/thời cơ), **Chỉn chu** (chu đáo), **Chẩn đoán** (xác định bệnh).
+  + **Giành giật** (tranh cướp), **Giấu giếm** (cất đi), **Dè sẻn** (tằn tiện), **Đầy ắp** (không phải đầy ấp).
+  + **Điểm xuyết** (tô điểm), **Độc giả** (người đọc), **Đường sá** (đường đi), **Hàm súc/Súc tích** (cô đọng).
+  + **Hằng ngày** (lặp lại liên tục), **Khắt khe** (nghiêm khắc), **Khảng khái** (hào hiệp).
+  + **Lãng mạn** (không dùng lạng), **Nhậm chức** (gánh vác chức vụ).
+  + **Phong thanh** (loáng thoáng) vs **Phong phanh** (mong manh), **Phố xá** (hàng quán).
+  + **Xán lạn** (rực rỡ), **Sáp nhập** (gộp lại), **Suôn sẻ** (trôi chảy).
+  + **Tham quan** (đi xem), **Trí thức** (người) vs **Tri thức** (kiến thức).
+  + **Tựu trung** (tóm lại), **Vô hình trung** (tự nhiên lại là).
+  + **Vãng cảnh** (đến ngắm), **Xoay xở** (không phải xoay sở).
+  + **Yếu điểm** (điểm quan trọng) vs **Điểm yếu** (nhược điểm).
+- **VỀ CỘT VỊ TRÍ:** Tuyệt đối không ghi số dòng hoặc câu dài. Phải ghi thật ngắn gọn lỗi nằm ở **Phần** hoặc **Mục** nào (VD: Phần 1, Mục 2.2, Mục III.1...). 
+
+- **LUẬT CHÍNH TẢ & QUY TẮC ĐÁNH DẤU THANH (CHUYÊN SÂU):**
+  + **Luật L/N:** **N** không đứng đầu các tiếng có âm đệm (oa, oe, uâ, uy) - ngoại trừ *noãn, noa*. Còn lại dùng **L**.
+  + **Luật S/X:** **S** không đứng đầu tiếng có âm đệm - ngoại trừ *soát, soạt, soạng, soạn, suất*. Còn lại dùng **X**.
+  + **Luật R/D/GI:** **R** và **GI** không đứng đầu tiếng có âm đệm. Gặp âm đệm thì chọn **D**.
+  + **Luật C/K/Q & Ngh/Gh:** 
+    - **K, Gh, Ngh** chỉ đi với **i, e, ê**.
+    - **C, G, Ng** đi với các nguyên âm còn lại.
+    - **Q** luôn đi với âm đệm **u (qu)**.
+  + **Quy tắc đánh dấu thanh (Chuẩn Thạc sỹ):**
+    1. Tiếng có 1 nguyên âm: Đặt vào nguyên âm đó.
+    2. Có nguyên âm có dấu phụ (ă, â, ê, ô, ơ, ư): Dấu thanh **bắt buộc** đặt ở chữ đó.
+    3. Có 2 nguyên âm + kết thúc bằng phụ âm: Đặt dấu ở nguyên âm **thứ 2**.
+    4. Kết thúc bằng **oa, oe, uy**: Đặt dấu ở nguyên âm **cuối** (hòa, huệ, thủy).
+    5. Kết thúc bằng nguyên âm khác (ai, ay, ao, au...): Đặt dấu ở nguyên âm **gần cuối** (bài, bảy, báo).
+
+- **BÚT PHÁP, LOGIC & KỸ THUẬT VĂN BẢN (CAO CẤP):**
+  + **Lỗi thanh điệu:** Đặc biệt kiểm soát các cặp hỏi/ngã hay bị nhầm (VD: giảng vs giãng, sõi vs sỏi).
+  + **Kỹ thuật dấu câu:** 
+    - Dấu phẩy, chấm, chấm phẩy, hai chấm: Viết sát chữ đằng trước, cách 1 khoảng trắng với chữ sau. 
+    - Dấu ngoặc ( ), " ": Nội dung bên trong phải viết **sát** vào dấu (không có khoảng trắng dư thừa giữa dấu và chữ đầu/cuối của nội dung).
+  + **Lỗi lặp nghĩa (Redundancy):** Phát hiện và loại bỏ các lỗi dùng từ thừa nghĩa (VD: "đường quốc lộ" - bỏ "đường" vì "lộ" là đường; "yêu mến/kính yêu" lặp nghĩa trong 1 câu).
+  + **Kiến trúc câu:** 
+    - Đảm bảo câu có đủ **Chủ ngữ - Vị ngữ**, trừ trường hợp câu đặc biệt có chủ đích.
+    - Tránh câu tối nghĩa (hiểu theo nhiều cách) hoặc câu quá dài dòng (miên man, không ngắt nghỉ). Ưu tiên diễn đạt ngắn gọn, súc tích (VD: "Em rất kính yêu bà" thay vì diễn đạt rườm rà).
+  + **Tính liên kết & Logic:** Kiểm tra sự mạch lạc giữa các đoạn, sử dụng từ nối phù hợp. Đảm bảo các luận điểm triển khai theo thứ tự logic, không chồng chéo hoặc rời rạc.
 
 CHIẾN LƯỢC PHẢN HỒI (HÃY LÀM THEO THỨ TỰ NÀY ĐỂ TỐI ƯU TỐC ĐỘ):
-- HÃY XUẤT "PHẦN 1: BÁO CÁO JSON" ĐẦU TIÊN ĐỂ NGƯỜI DÙNG THẤY KẾT QUẢ TỨC THÌ.
+    - HÃY XUẤT "PHẦN 1: BÁO CÁO JSON" ĐẦU TIÊN ĐỂ NGƯỜI DÙNG THẤY KẾT QUẢ TỨC THÌ.
 - Tiếp theo là "PHẦN 2: BẢNG LỖI".
 - Sau cùng mới là "PHẦN 3: VĂN BẢN ĐÃ ĐÁNH DẤU".
 
 CẤU TRÚC PHẢN HỒI BẮT BUỘC:
 PHẦN 1: [REPORT_START]
-{
-  "total_errors": (Tổng số lỗi thực tế phát hiện được),
-  "grade": "(Xuất sắc/Giỏi/Khá/Trung bình/Yếu)",
-  "expert_summary": "(Nhận xét chuyên môn của Giáo sư về 5 trụ cột ngôn ngữ)",
-  "detailed_insights": {
-    "strengths": "(Điểm sáng trong cách hành văn)",
-    "weaknesses": "(Phân tích sâu về các loại lỗi đã nêu)"
-  },
-  "elevation_advice": "(Lời khuyên để văn phong chuẩn mực hơn)"
-}
-[REPORT_END]
+    {
+      "total_errors": (Tổng số lỗi thực tế phát hiện được),
+      "grade": "(Xuất sắc/Giỏi/Khá/Trung bình/Yếu)",
+        "expert_summary": "(Nhận xét chuyên môn của Giáo sư về 5 trụ cột ngôn ngữ)",
+          "detailed_insights": {
+        "strengths": "(Điểm sáng trong cách hành văn)",
+          "weaknesses": "(Phân tích sâu về các loại lỗi đã nêu)"
+      },
+      "elevation_advice": "(Lời khuyên để văn phong chuẩn mực hơn)"
+    }
+    [REPORT_END]
 
 PHẦN 2: [TABLE_START]
-| STT | Từ sai/Lỗi logic | Vị trí (Phần/Mục) | Đoạn văn chứa lỗi | Dạng đúng/Đề xuất | Giải thích lý do |
-|-----|------------------|-------------------|-------------------|-------------------|------------------|
+      | STT | Từ sai / Lỗi logic | Vị trí(Phần / Mục) | Đoạn văn chứa lỗi | Dạng đúng / Đề xuất | Giải thích lý do |
+| -----| ------------------| -------------------| -------------------| -------------------| ------------------|
 | ... | ...              | ...               | ...               | ...               | ...              |
-[TABLE_END]
-`;
+      [TABLE_END]
+        `;
   } else if (mode === 'ocr') {
     systemInstruction = `${systemContext}
 BẠN LÀ CHUYÊN GIA LƯU TRỮ VÀ SỐ HÓA TÀI LIỆU TỐI CAO.TRÍCH XUẤT VĂN BẢN VỚI ĐỘ CHÍNH XÁC TUYỆT ĐỐI TRONG THẺ[OCR_START] ...[OCR_END]`;
@@ -448,15 +498,15 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
       // Retry on 503 (overloaded) errors
       if (is503 && attempt < MAX_RETRIES) {
         const waitTime = RETRY_DELAYS[attempt];
-        console.warn(`[Retry ${attempt + 1}/${MAX_RETRIES}] Model ${modelName} overloaded. Retrying in ${waitTime / 1000}s...`);
-        if (onChunk) onChunk(`⏳ Mô hình AI đang quá tải. Tự động thử lại sau ${waitTime / 1000} giây... (Lần ${attempt + 1}/${MAX_RETRIES})`);
+        console.warn(`[Retry ${attempt + 1} /${MAX_RETRIES}] Model ${modelName} overloaded. Retrying in ${waitTime / 1000}s...`);
+        if (onChunk) onChunk(`⏳ Mô hình AI đang quá tải.Tự động thử lại sau ${waitTime / 1000} giây... (Lần ${attempt + 1}/${MAX_RETRIES})`);
         await delay(waitTime);
         continue;
       }
 
       // Fallback to gemini-1.5-flash on 429/404/503 after retries exhausted
       if ((is503 || is429 || is404) && modelName !== "gemini-1.5-flash") {
-        console.warn(`Model ${modelName} failed after ${attempt} retries. Falling back to gemini-1.5-flash.`);
+        console.warn(`Model ${modelName} failed after ${attempt} retries.Falling back to gemini - 1.5 - flash.`);
         try {
           if (onChunk) onChunk("🔄 Hệ thống đang chuyển sang mô hình dự phòng (Gemini 1.5 Flash) để hoàn tất xử lý...");
           const fallbackStream = await executeRequest("gemini-1.5-flash");
