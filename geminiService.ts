@@ -2,9 +2,9 @@
 import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
 export const analyzeContent = async (
-  base64Data: string, 
-  mimeType: string, 
-  prompt: string = "", 
+  base64Data: string,
+  mimeType: string,
+  prompt: string = "",
   onChunk?: (text: string) => void,
   mode: string = "spellcheck",
   userKey?: string,
@@ -13,13 +13,13 @@ export const analyzeContent = async (
   audioData?: { data: string, mimeType: string }
 ) => {
   const apiKey = userKey || process.env.GEMINI_API_KEY;
-  
+
   if (!apiKey) {
     throw new Error("Vui lòng nhập API Key trong phần cấu hình để bắt đầu.");
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  
+
   // Tính toán thời gian động dựa trên mốc: 
   // Thực tế: 2026-02-24 09:23:36 -> Mô phỏng: 2026-02-25 23:12:00
   // (Để 48 phút sau là ngày 26/02/2026)
@@ -28,10 +28,10 @@ export const analyzeContent = async (
     const referenceSimulated = new Date("2026-02-25T23:12:00").getTime();
     const offset = referenceSimulated - referenceReal;
     const nowSimulated = new Date(Date.now() + offset);
-    
-    return nowSimulated.toLocaleString('vi-VN', { 
-      day: '2-digit', 
-      month: '2-digit', 
+
+    return nowSimulated.toLocaleString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
@@ -97,7 +97,13 @@ NHIỆM VỤ CỦA GIÁO SƯ (NÂNG CAO KHẢ NĂNG KIỂM TRA):
 - KIỂM TRA THỂ THỨC VĂN BẢN (FORMATTING & STYLE):
     - Phân tích cấu trúc tiêu đề (Mục I, 1.1, a...): Kiểm tra xem việc đánh số, viết hoa, in đậm/in nghiêng của các cấp tiêu đề có tuân thủ Nghị định 30/2020/NĐ-CP hay chưa.
     - Cảnh báo về Font chữ & Cỡ chữ: Dựa trên ngữ cảnh văn bản, nhắc nhở người dùng về quy định Font chữ (Times New Roman), Cỡ chữ (13-14 cho nội dung, 14-15 cho tiêu đề) và các quy định về căn lề (Lề trái 30-35mm, Lề phải 15-20mm...).
-    - Kiểm tra các thành phần thể thức khác: Quốc hiệu, Tiêu ngữ, Tên cơ quan, Địa danh, Ngày tháng, Chức vụ, Chữ ký... đảm bảo vị trí và định dạng đúng chuẩn.
+    - Kiểm tra các thành phần thể thức khác. LƯU Ý ĐẶC BIỆT QUAN TRỌNG: Tuyệt đối BỎ QUA và KHÔNG báo cáo lỗi thể thức đối với 5 mục sau (đây là yêu cầu bắt buộc từ người dùng):
+      (1) Phần Quốc hiệu và Tiêu ngữ (Cộng hòa xã hội... Độc lập...) dù không được căn giữa.
+      (2) Tiêu đề văn bản (Ví dụ: "ĐƠN YÊU CẦU CÔNG NHẬN SÁNG KIẾN") dù không căn giữa hoặc sai cỡ chữ, kiểu chữ.
+      (3) Bảng thông tin tác giả trình bày chưa chuẩn, thiếu đường kẻ hoặc sai tiêu đề cột (đặc biệt cột "Ngữ văn" dưới "Trình độ").
+      (4) Việc sử dụng dấu ba chấm (...) ở cuối câu hoặc cuối danh sách liệt kê.
+      (5) Việc sử dụng dấu gạch ngang (-) làm ký hiệu liệt kê.
+      Tuyệt đối không đưa các lỗi này vào danh sách báo cáo lỗi.
 - Tuyệt đối không thay đổi nội dung gốc: Nhiệm vụ duy nhất là kiểm tra, xác định và báo cáo lỗi một cách khắt khe nhất. Không được tự ý lược bỏ hoặc thay đổi ý nghĩa của văn bản.
 
 CẤU TRÚC PHẢN HỒI BẮT BUỘC (KHÔNG ĐƯỢC THAY ĐỔI):
@@ -381,27 +387,26 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
     const isRewrite = mode === 'rewrite';
     const isAudio = mode === 'audio_to_draft';
     const isJson = mode === 'logic_check' || mode === 'originality_check';
-    
-    let modelName = "gemini-3-flash-preview";
-    if (isRewrite) modelName = "gemini-3.1-pro-preview";
-    if (isAudio) modelName = "gemini-2.5-flash-native-audio-preview-12-2025";
+
+    let modelName = "gemini-2.0-flash";
+    if (isRewrite) modelName = "gemini-1.5-pro";
+    if (isAudio) modelName = "gemini-2.0-flash";
 
     const responseStream = await ai.models.generateContentStream({
       model: modelName,
       contents: [{ parts }],
-      config: { 
-        systemInstruction, 
+      config: {
+        systemInstruction,
         temperature: (isRewrite || isAudio) ? 0.8 : (style === 'skkn' ? 0.3 : 0.1),
         responseMimeType: isJson ? "application/json" : undefined,
-        thinkingConfig: (style === 'skkn' || isRewrite || isAudio) ? { thinkingLevel: ThinkingLevel.HIGH } : undefined,
-        tools: (mode === 'spellcheck' || style === 'skkn') ? [{ googleSearch: {} }] : undefined
       },
     });
 
     let fullText = "";
     for await (const chunk of responseStream) {
-      if (chunk.text) {
-        fullText += chunk.text;
+      const text = chunk.text;
+      if (text) {
+        fullText += text;
         if (onChunk) onChunk(fullText);
       }
     }

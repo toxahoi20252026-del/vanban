@@ -8,13 +8,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  isLoading, 
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = 'primary',
+  isLoading,
   size = 'md',
-  className = '', 
-  ...props 
+  className = '',
+  ...props
 }) => {
   const baseStyles = "rounded-lg font-medium transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap";
   const variants = {
@@ -31,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button 
+    <button
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       disabled={isLoading || props.disabled}
       {...props}
@@ -48,9 +48,20 @@ export const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children,
   </div>
 );
 
-export const ErrorBanner: React.FC<{ message: string }> = ({ message }) => (
-  <div className="bg-red-50 border border-red-100 text-red-600 p-3 rounded-lg flex items-center gap-2 mb-4 animate-in fade-in slide-in-from-top-2">
-    <AlertCircle className="w-4 h-4 flex-shrink-0" />
-    <span className="text-xs font-medium">{message}</span>
-  </div>
-);
+export const ErrorBanner: React.FC<{ message: string }> = ({ message }) => {
+  const displayMessage = React.useMemo(() => {
+    try {
+      const parsed = JSON.parse(message);
+      return parsed.error?.message || parsed.message || message;
+    } catch (e) {
+      return message;
+    }
+  }, [message]);
+
+  return (
+    <div className="bg-red-50 border border-red-100 text-red-600 p-3 rounded-lg flex items-center gap-2 mb-4 animate-in fade-in slide-in-from-top-2">
+      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+      <span className="text-xs font-medium">{displayMessage}</span>
+    </div>
+  );
+};

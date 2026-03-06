@@ -893,19 +893,25 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            <Button
-              className={`w-full py-6 rounded-2xl text-[12px] font-black uppercase shadow-xl transition-all active:scale-95 group mb-8 md:mb-10 shrink-0 ${activePreset === 'summary' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-100' :
-                activePreset === 'spellcheck' ? 'bg-pink-600 hover:bg-pink-700 shadow-pink-100' :
-                  'bg-slate-700 hover:bg-slate-900'
-                }`}
-              onClick={handleProcess}
-              isLoading={status === AppStatus.LOADING}
-              disabled={!fileData && !(activePreset === 'rewrite' && rewriteStyle === 'skkn')}
-            >
-              BẮT ĐẦU XỬ LÝ <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
             <div className="h-4 w-full shrink-0"></div>
           </div>
+        </div>
+
+        <div className="p-6 bg-[#FFFBEB] border-t border-yellow-100 shadow-[0_-10px_20px_rgba(0,0,0,0.02)] space-y-4">
+          {error && <ErrorBanner message={error} />}
+          <Button
+            className={`w-full py-6 rounded-2xl text-[12px] font-black uppercase shadow-xl transition-all active:scale-95 group ${status === AppStatus.LOADING ? 'opacity-70' :
+              activePreset === 'summary' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-100' :
+                activePreset === 'spellcheck' ? 'bg-pink-600 hover:bg-pink-700 shadow-pink-100' :
+                  activePreset === 'rewrite' ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-100' :
+                    'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-100'
+              }`}
+            onClick={handleProcess}
+            isLoading={status === AppStatus.LOADING}
+            disabled={status === AppStatus.LOADING || (!fileData && (activePreset !== 'rewrite' || rewriteStyle !== 'skkn'))}
+          >
+            {status === AppStatus.LOADING ? "ĐANG XỬ LÝ..." : "BẮT ĐẦU XỬ LÝ"} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Button>
         </div>
       </aside>
 
@@ -944,7 +950,7 @@ const App: React.FC = () => {
                 <RefreshCw className="w-4 h-4" /> {showDiff ? 'ẨN SO SÁNH' : 'SO SÁNH'}
               </Button>
             )}
-            {rawOutput && (
+            {rawOutput && activePreset !== 'spellcheck' && (
               <Button
                 onClick={handleOriginalityCheck}
                 variant="outline" size="sm" className={`rounded-full px-4 whitespace-nowrap md:px-6 font-bold ${originalityReport ? 'bg-emerald-50 border-emerald-500 text-emerald-600' : 'border-slate-200 text-slate-600'}`}
