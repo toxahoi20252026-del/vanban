@@ -74,7 +74,8 @@ import {
   SearchCheck,
   FileCheck2,
   ShieldAlert,
-  Menu
+  Menu,
+  Table2
 } from 'lucide-react';
 import * as mammoth from 'mammoth';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, VerticalAlign, AlignmentType, BorderStyle, UnderlineType } from 'docx';
@@ -838,17 +839,22 @@ const App: React.FC = () => {
         onClick={() => setIsSidebarOpen(false)}
       />
       <aside className={`w-80 bg-[#FFFBEB] md:bg-[#FFFBEB]/50 border-r border-yellow-100 flex flex-col z-50 shadow-2xl fixed inset-y-0 left-0 lg:static lg:translate-x-0 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="p-8 border-b border-yellow-50 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <EduLogo className="w-6 h-6" />
-            <div>
-              <h1 className="font-black text-slate-900 text-[18px] uppercase tracking-tighter leading-none">VisionScript</h1>
-              <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.1em] mt-1.5 inline-block">TRƯỜNG TH&THCS BÃI THƠM</span>
+        <div className="px-6 py-8 border-b border-yellow-50/50 flex flex-col gap-4 relative">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-3">
+              <EduLogo className="w-5 h-5" />
+              <h1 className="font-black text-slate-900 text-[20px] uppercase tracking-tighter leading-none">VisionScript</h1>
             </div>
+            <button className="lg:hidden text-slate-400 p-1.5 hover:bg-slate-50 rounded-lg transition-colors" onClick={() => setIsSidebarOpen(false)}>
+              <X className="w-5 h-5" />
+            </button>
           </div>
-          <button className="lg:hidden text-slate-400 p-2" onClick={() => setIsSidebarOpen(false)}>
-            <X className="w-5 h-5" />
-          </button>
+          <div className="pl-0.5">
+            <span className="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em] leading-tight block whitespace-nowrap">
+              TRƯỜNG TH&THCS BÃI THƠM
+            </span>
+            <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full mt-2 opacity-30"></div>
+          </div>
         </div>
 
         <div className="flex-grow overflow-y-auto p-6 space-y-8 custom-scrollbar">
@@ -1545,6 +1551,29 @@ const App: React.FC = () => {
 
               {activePreset === 'spellcheck' && (
                 <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                  <div className="text-center space-y-4 mb-12">
+                    <h2 className="text-[32px] md:text-[42px] font-black text-slate-900 tracking-tight leading-tight uppercase font-serif">BÁO CÁO HIỆU ĐÍNH HỌC THUẬT CHUYÊN SÂU</h2>
+                    <p className="text-[14px] md:text-[16px] font-medium text-slate-500 italic font-serif">Được thực hiện bởi Nhà giáo nhân dân - Giáo sư (VisionScript AI)</p>
+                    <div className="h-1 w-24 bg-blue-600 mx-auto rounded-full opacity-20"></div>
+                  </div>
+
+                  {fileData?.name && (
+                    <div className="bg-white/50 backdrop-blur-sm border border-slate-100 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                          <FileText className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">TÊN TÀI LIỆU PHÂN TÍCH</p>
+                          <p className="text-[16px] font-bold text-slate-800 font-serif">{fileData.name}</p>
+                        </div>
+                      </div>
+                      <div className="text-right hidden md:block">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">NGÀY XUẤT BÁO CÁO</p>
+                        <p className="text-[14px] font-medium text-slate-600 font-serif">{new Date().toLocaleDateString('vi-VN')} {new Date().toLocaleTimeString('vi-VN')}</p>
+                      </div>
+                    </div>
+                  )}
                   {!parsedData.reportData && rawOutput && (
                     <Card className="p-10 rounded-[3rem] border-slate-100 shadow-xl">
                       <div className="flex items-center gap-3 mb-6">
@@ -1559,26 +1588,43 @@ const App: React.FC = () => {
 
                   {parsedData.reportData && (
                     <>
-                      {parsedData.markedText && (
-                        <Card className="p-8 md:p-12 rounded-[3.5rem] border-slate-100 shadow-xl bg-white relative overflow-hidden">
-                          <div className="absolute top-0 right-0 p-6 opacity-[0.05]">
-                            <SearchCheck className="w-20 h-20" />
-                          </div>
-                          <div className="flex items-center gap-3 mb-8 px-2">
-                            <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center">
-                              <Eye className="w-5 h-5 text-pink-500" />
+                      {parsedData.tableRows && parsedData.tableRows.length > 0 && (
+                        <Card className="p-8 md:p-12 rounded-[3.5rem] border-slate-100 shadow-xl bg-white overflow-hidden">
+                          <div className="flex items-center gap-3 mb-8">
+                            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+                              <Table2 className="w-5 h-5 text-blue-600" />
                             </div>
-                            <span className="text-[11px] font-black text-pink-700 uppercase tracking-widest">VĂN BẢN ĐÃ HIỆU ĐÍNH (TRỰC QUAN)</span>
+                            <span className="text-[11px] font-black text-blue-700 uppercase tracking-widest">BẢNG KÊ LỖI CHI TIẾT & ĐỀ XUẤT</span>
                           </div>
-                          <div className="bg-[#FFFFFC] border border-pink-50 rounded-3xl p-8 md:p-12 font-serif text-[18px] md:text-[20px] text-slate-800 leading-[2.2] whitespace-pre-wrap shadow-inner min-h-[400px]">
-                            {parsedData.markedText}
+                          <div className="overflow-x-auto -mx-8 md:-mx-12 px-8 md:px-12">
+                            <table className="w-full border-collapse font-serif text-[15px]">
+                              <thead>
+                                <tr className="bg-slate-50 border-y border-slate-100 font-black text-[11px] text-slate-500 uppercase tracking-widest text-left">
+                                  <th className="py-4 px-4 w-12">STT</th>
+                                  <th className="py-4 px-4">Từ sai/Lỗi logic</th>
+                                  <th className="py-4 px-4">Vị trí</th>
+                                  <th className="py-4 px-4">Đoạn văn chứa lỗi</th>
+                                  <th className="py-4 px-4">Dạng đúng/Đề xuất</th>
+                                  <th className="py-4 px-4">Giải thích lý do</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {parsedData.tableRows.map((row, idx) => (
+                                  <tr key={idx} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                                    <td className="py-5 px-4 font-bold text-slate-400">{row[0]}</td>
+                                    <td className="py-5 px-4 font-bold text-red-600">{row[1]}</td>
+                                    <td className="py-5 px-4 text-slate-500">{row[2]}</td>
+                                    <td className="py-5 px-4 text-slate-700 italic leading-relaxed">{row[3]}</td>
+                                    <td className="py-5 px-4 font-bold text-emerald-600">{row[4]}</td>
+                                    <td className="py-5 px-4 text-[13px] text-slate-500 leading-relaxed">{row[5]}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
                           </div>
-                          <div className="mt-6 flex items-center gap-4 px-4">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-red-100 border border-red-200 rounded-sm"></div>
-                              <span className="text-[9px] font-black text-slate-400 uppercase">Lỗi đã đánh dấu</span>
-                            </div>
-                            <p className="text-[10px] text-slate-400 italic">Chú ý: Các lỗi được chuyên gia đánh dấu trực tiếp để bạn dễ dàng nhận diện và chỉnh sửa.</p>
+                          <div className="mt-8 flex items-center justify-between text-[11px] text-slate-400 italic">
+                            <p>* Trích dẫn NĐ 30/2020/NĐ-CP hoặc QĐ 240/QĐ-BGDĐT làm căn cứ pháp lý.</p>
+                            <p>Báo cáo tự động bởi VisionScript AI</p>
                           </div>
                         </Card>
                       )}
