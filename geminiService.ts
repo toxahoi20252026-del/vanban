@@ -413,7 +413,7 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
   const processResponse = async (stream: any) => {
     let fullText = "";
     let lastEmitTime = 0;
-    const throttleMs = 60; // Chỉ cập nhật UI mỗi 60ms để tránh lag
+    const throttleMs = mode === 'rewrite' ? 120 : 60; // SKKN dài cần throttle cao hơn để tránh lag trình duyệt
 
     for await (const chunk of stream) {
       const text = chunk.text;

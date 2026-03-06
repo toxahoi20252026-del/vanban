@@ -718,10 +718,19 @@ const App: React.FC = () => {
         finalPrompt,
         (chunk) => {
           setRawOutput(chunk);
-          if (chunk.includes("[MARKED_START]") && !chunk.includes("[MARKED_END]")) setLoadingText("Đang hiệu đính và đánh dấu lỗi trực tiếp...");
-          else if (chunk.includes("[TABLE_START]") && !chunk.includes("[TABLE_END]")) setLoadingText("Đang lập bảng phân tích lỗi chi tiết...");
-          else if (chunk.includes("[REPORT_START]") && !chunk.includes("[REPORT_END]")) setLoadingText("Đang xuất báo cáo và xếp loại học thuật...");
-          else if (chunk.includes("dự phòng")) setLoadingText("Đang chuyển sang mô hình dự phòng siêu tốc...");
+          if (activePreset === 'rewrite') {
+            if (chunk.includes("I. THÔNG TIN")) setLoadingText("Đang thiết lập thông tin tác giả và đơn vị...");
+            else if (chunk.includes("II. THÔNG TIN")) setLoadingText("Đang khởi tạo cấu trúc sáng kiến kinh nghiệm...");
+            else if (chunk.includes("III. YÊU CẦU")) setLoadingText("Đang triển khai nội dung giải pháp chi tiết...");
+            else if (chunk.includes("Hiệu quả")) setLoadingText("Đang tổng hợp kết quả và hiệu quả dự kiến...");
+            else if (chunk.includes("Cam kết")) setLoadingText("Đang hoàn thiện văn phong hành chính cuối cùng...");
+            else setLoadingText("Chuyên gia đang miệt mài biên soạn văn bản học thuật...");
+          } else {
+            if (chunk.includes("[MARKED_START]") && !chunk.includes("[MARKED_END]")) setLoadingText("Đang hiệu đính và đánh dấu lỗi trực tiếp...");
+            else if (chunk.includes("[TABLE_START]") && !chunk.includes("[TABLE_END]")) setLoadingText("Đang lập bảng phân tích lỗi chi tiết...");
+            else if (chunk.includes("[REPORT_START]") && !chunk.includes("[REPORT_END]")) setLoadingText("Đang xuất báo cáo và xếp loại học thuật...");
+            else if (chunk.includes("dự phòng")) setLoadingText("Đang chuyển sang mô hình dự phòng siêu tốc...");
+          }
         },
         activePreset,
         userKey,
@@ -978,7 +987,7 @@ const App: React.FC = () => {
                 <Download className="w-4 h-4" /> <span className="hidden md:inline">TẢI FILE WORD</span> ({parsedData.reportData.total_errors} LỖI)
               </Button>
             )}
-            {activePreset === 'rewrite' && rawOutput && (
+            {activePreset === 'rewrite' && rewriteStyle !== 'skkn' && rawOutput && (
               <Button
                 onClick={() => setShowDiff(!showDiff)}
                 variant="outline" size="sm" className={`rounded-full px-4 whitespace-nowrap md:px-6 font-bold ${showDiff ? 'bg-blue-50 border-blue-500 text-blue-600' : 'border-slate-200 text-slate-600'}`}
@@ -986,13 +995,21 @@ const App: React.FC = () => {
                 <RefreshCw className="w-4 h-4" /> {showDiff ? 'ẨN SO SÁNH' : 'SO SÁNH'}
               </Button>
             )}
-            {rawOutput && activePreset !== 'spellcheck' && (
+            {rawOutput && activePreset !== 'spellcheck' && (activePreset !== 'rewrite' || rewriteStyle !== 'skkn') && (
               <Button
                 onClick={handleOriginalityCheck}
                 variant="outline" size="sm" className={`rounded-full px-4 whitespace-nowrap md:px-6 font-bold ${originalityReport ? 'bg-emerald-50 border-emerald-500 text-emerald-600' : 'border-slate-200 text-slate-600'}`}
                 isLoading={isProcessingOriginality}
               >
                 <SearchCheck className="w-4 h-4" /> <span className="hidden md:inline">{originalityReport ? 'CẬP NHẬT ' : 'KIỂM TRA '} NGUYÊN BẢN</span>
+              </Button>
+            )}
+            {activePreset === 'rewrite' && rewriteStyle === 'skkn' && rawOutput && (
+              <Button
+                onClick={() => exportToDocx(parsedData.rewriteText || rawOutput, skknData.initiativeName || "Don_Yeu_Cau_Cong_Nhan_Sang_Kien")}
+                variant="primary" size="sm" className="rounded-full bg-blue-600 hover:bg-blue-700 text-white border-none px-4 md:px-6 font-bold shadow-lg shadow-blue-200/50"
+              >
+                <Download className="w-4 h-4" /> <span className="hidden md:inline">TẢI FILE WORD (.DOCX)</span>
               </Button>
             )}
             {rawOutput && activePreset !== 'spellcheck' && (
@@ -1679,7 +1696,7 @@ const App: React.FC = () => {
                         )}
                       </div>
                       <div className="markdown-body">
-                        {showDiff ? (
+                        {showDiff && status !== AppStatus.LOADING ? (
                           <DiffView oldText={fileData?.rawText || ""} newText={parsedData.rewriteText || rawOutput} />
                         ) : (
                           <ReactMarkdown remarkPlugins={[remarkGfm]}>
