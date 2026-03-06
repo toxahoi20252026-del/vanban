@@ -10,7 +10,8 @@ export const analyzeContent = async (
   userKey?: string,
   style: string = "academic",
   summaryLevel: string = "standard",
-  audioData?: { data: string, mimeType: string }
+  audioData?: { data: string, mimeType: string },
+  model: string = "gemini-2.5-flash"
 ) => {
   const apiKey = userKey || process.env.GEMINI_API_KEY;
 
@@ -69,17 +70,17 @@ BẠN LÀ NHÀ GIÁO NHÂN DÂN - GIÁO SƯ TIẾN SĨ NGÔN NGỮ HỌC VIỆT 
 TIÊU CHUẨN VÀ NGUỒN DẪN CHIẾU TUYỆT ĐỐI:
 1. Nghị định số 30/2020/NĐ-CP ngày 05/3/2020 của Chính phủ: Đây là "kim chỉ nam" về thể thức, kỹ thuật trình bày văn bản hành chính. Bạn phải soi xét từng dấu chấm, dấu phẩy, cách viết hoa (đặc biệt là viết hoa tên riêng, chức vụ, địa danh), khoảng cách dòng, phông chữ, và cách đánh số mục theo đúng quy định tại Phụ lục I của Nghị định này.
 2. CẬP NHẬT CƠ SỞ PHÁP LÝ 2025-2026: Sử dụng công cụ Tìm kiếm Google để xác minh các thông tư, nghị định mới nhất được ban hành trong năm 2025 và 2026. Nếu văn bản tham chiếu đến các quy định cũ đã bị thay thế, hãy báo lỗi và đề xuất cập nhật theo quy định mới nhất.
-3. Từ điển Tiếng Việt (Hoàng Phê chủ biên) và Quy tắc chính tả i/y (Quyết định 240/QĐ): Đây là chuẩn mực duy nhất. Bạn phải tuân thủ nghiêm ngặt các quy tắc:
-   - Quy tắc i ngắn: Viết "i" sau các phụ âm h, k, l, m, s, t trong những âm tiết không có phụ âm cuối (Ví dụ: bác sĩ, tỉ lệ, kỉ niệm, hi vọng, lí luận, mĩ thuật).
-   - Quy tắc y dài: 
-     + Dùng "y" khi đứng một mình (y tế, ý nghĩa).
-     + Dùng "y" khi đứng đầu tiếng và là nguyên âm đôi "iê" (yên ả, yêu thương).
-     + Dùng "y" sau âm đệm "u" trong vần "uy" (quy định, thúy, quý, hủy, tủy, nguy, Quy Nhơn).
-   - Tên riêng: Tôn trọng cách viết tên riêng (Nguyễn Văn Vỹ, Vi Văn Định) nhưng ưu tiên chuẩn hóa nếu là địa danh (Quy Nhơn viết y dài).
-   - Phân biệt âm chính/âm đệm: 
-     + "uy" (u là âm đệm, y là âm chính) -> viết y dài (Quy, Quý).
-     + "ui" (u là âm chính, i là âm đệm) -> viết i ngắn (túi, cúi, khui, thụi).
-   - Quy tắc viết hoa tên người, tên địa danh, tên cơ quan tổ chức theo chuẩn chính tả mới nhất.
+    - QUY TẮC CHÍNH TẢ I/Y (CHUẨN QUYẾT ĐỊNH 240 & 1989/QĐ-BGDĐT 2018):
+      + Viết "Y" dài trong các trường hợp:
+        1. "Y" đứng một mình làm một âm tiết độc lập (Ví dụ: y tế, ý nghĩa, y sĩ, ý kiến).
+        2. "Y" đứng sau âm đệm "u" trong vần "uy" (Ví dụ: suy nghĩ, QUY ĐỊNH, QUY NHƠN, nguyên lý, quý giá, kỷ tỵ).
+        3. "Y" đứng đầu tiếng khi là nguyên âm đôi "iê" (Ví dụ: yên ả, yêu thương, yến tiệc).
+      + Viết "I" ngắn trong các trường hợp:
+        1. "I" đứng đầu tiếng và không có âm đệm (Ví dụ: im lặng, in ấn, ích lợi).
+        2. "I" đứng ở cuối tiếng sau phụ âm đầu h, k, l, m, s, t, ngoại trừ các vần "uy", "ay", "ây" (Ví dụ: chui lủi, hoa nhài, kỉ niệm, hi vọng, mĩ thuật, bác sĩ).
+        3. Trường hợp có cả 2 cách viết "i" và "y" mà nghĩa không đổi: ƯU TIÊN DÙNG "I" NGẮN (Ví dụ: kỉ niệm, hi sinh, lí do, li kì, LIỆT SĨ, NƯỚC MĨ, HOA KÌ).
+      + LƯU Ý VỀ TÊN RIÊNG & PHÁP LÝ: Tôn trọng tuyệt đối cách viết trong hồ sơ pháp lý (CCCD, hộ chiếu), danh mục hành chính nhà nước và ý nguyện cá nhân (Ví dụ: Lý Thái Tổ, Nguyễn Vỹ, bản Vy, Vi Văn Định, Thy Ngọc).
+    - Quy tắc viết hoa tên người, tên địa danh, cơ quan tổ chức theo chuẩn mới nhất.
    - Cách dùng dấu câu: Dấu phẩy, dấu chấm phẩy, dấu hai chấm phải đặt đúng logic ngữ pháp. Không đặt dấu cách trước dấu hai chấm (Ví dụ: "Tên:" thay vì "Tên :").
    - Ngữ nghĩa: Tuyệt đối không dùng từ sai ngữ cảnh, từ Hán Việt bị hiểu lầm hoặc từ địa phương không phổ quát.
 3. Quy định về chính tả trong sách giáo khoa của Bộ Giáo dục và Đào tạo: Đảm bảo tính thống nhất trong môi trường giáo dục.
@@ -383,25 +384,27 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
 
   parts.push({ text: prompt });
 
-  try {
-    const isRewrite = mode === 'rewrite';
-    const isAudio = mode === 'audio_to_draft';
-    const isJson = mode === 'logic_check' || mode === 'originality_check';
+  const isRewrite = mode === 'rewrite';
+  const isAudio = mode === 'audio_to_draft';
+  const isJson = mode === 'logic_check' || mode === 'originality_check';
 
-    let modelName = "gemini-2.0-flash";
-    if (isRewrite) modelName = "gemini-1.5-pro";
-    if (isAudio) modelName = "gemini-2.0-flash";
+  let modelName = model;
+  if (isAudio && model === "gemini-2.5-pro") modelName = "gemini-2.5-flash";
 
-    const responseStream = await ai.models.generateContentStream({
-      model: modelName,
+  const executeRequest = async (mName: string) => {
+    return await ai.models.generateContentStream({
+      model: mName,
       contents: [{ parts }],
       config: {
-        systemInstruction,
+        systemInstruction: { parts: [{ text: systemInstruction }] },
         temperature: (isRewrite || isAudio) ? 0.8 : (style === 'skkn' ? 0.3 : 0.1),
         responseMimeType: isJson ? "application/json" : undefined,
       },
     });
+  };
 
+  try {
+    const responseStream = await executeRequest(modelName);
     let fullText = "";
     for await (const chunk of responseStream) {
       const text = chunk.text;
@@ -412,6 +415,25 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
     }
     return fullText;
   } catch (error: any) {
+    const errorStr = error.message || "";
+    if ((errorStr.includes("429") || errorStr.includes("404") || errorStr.includes("quota")) && modelName !== "gemini-1.5-flash") {
+      console.warn(`Model ${modelName} failed. Falling back to gemini-1.5-flash.`);
+      try {
+        if (onChunk) onChunk("Hệ thống đang chuyển sang mô hình dự phòng để hoàn tất xử lý...");
+        const fallbackStream = await executeRequest("gemini-1.5-flash");
+        let fullText = "";
+        for await (const chunk of fallbackStream) {
+          const text = chunk.text;
+          if (text) {
+            fullText += text;
+            if (onChunk) onChunk(fullText);
+          }
+        }
+        return fullText;
+      } catch (fallbackError: any) {
+        throw new Error(fallbackError.message || "Lỗi xử lý cả với mô hình dự phòng.");
+      }
+    }
     throw new Error(error.message || "Lỗi kết nối AI.");
   }
 };

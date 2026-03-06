@@ -50,18 +50,34 @@ export const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children,
 
 export const ErrorBanner: React.FC<{ message: string }> = ({ message }) => {
   const displayMessage = React.useMemo(() => {
+    if (!message) return "";
+
+    // Attempt to extract JSON if the message contains other text
+    const jsonMatch = message.match(/\{.*\}/s);
+    const targetString = jsonMatch ? jsonMatch[0] : message;
+
     try {
-      const parsed = JSON.parse(message);
-      return parsed.error?.message || parsed.message || message;
+      const parsed = JSON.parse(targetString);
+      // Recursively look for message fields
+      const findMessage = (obj: any): string | null => {
+        if (typeof obj === 'string') return obj;
+        if (obj && typeof obj === 'object') {
+          return findMessage(obj.message) || findMessage(obj.error) || null;
+        }
+        return null;
+      };
+
+      return findMessage(parsed) || message;
     } catch (e) {
-      return message;
+      // If not JSON, clean up common technical prefixes
+      return message.replace(/^Error: /i, '').replace(/\[.*\] /g, '');
     }
   }, [message]);
 
   return (
     <div className="bg-red-50 border border-red-100 text-red-600 p-3 rounded-lg flex items-center gap-2 mb-4 animate-in fade-in slide-in-from-top-2">
-      <AlertCircle className="w-4 h-4 flex-shrink-0" />
-      <span className="text-xs font-medium">{displayMessage}</span>
+      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+      <span className="text-xs font-semibold leading-tight">{displayMessage}</span>
     </div>
   );
 };

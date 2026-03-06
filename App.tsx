@@ -95,6 +95,13 @@ const REWRITE_STYLES = [
   { id: 'skkn', label: 'SKKN', icon: <Award className="w-3 h-3" />, desc: "Sáng kiến kinh nghiệm" },
 ];
 
+const AI_MODELS = [
+  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash (Mặc định mới)' },
+  { id: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Ổn định)' },
+  { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro (Nâng cao)' },
+  { id: 'gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash-Lite' },
+];
+
 const SUMMARY_LEVELS = [
   { id: 'flashcard', label: 'Sơ lược', icon: <Layers className="w-3 h-3" /> },
   { id: 'standard', label: 'Tiêu chuẩn', icon: <FileText className="w-3 h-3" /> },
@@ -179,6 +186,7 @@ const App: React.FC = () => {
   const [activePreset, setActivePreset] = useState(PRESETS[1].id);
   const [rewriteStyle, setRewriteStyle] = useState('academic');
   const [summaryLevel, setSummaryLevel] = useState('standard');
+  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
   const [rawOutput, setRawOutput] = useState('');
   const [status, setStatus] = useState<AppStatus>(AppStatus.IDLE);
   const [error, setError] = useState<string | null>(null);
@@ -310,7 +318,8 @@ const App: React.FC = () => {
               userKey,
               "skkn",
               "standard",
-              { data: base64Audio, mimeType: 'audio/webm' }
+              { data: base64Audio, mimeType: 'audio/webm' },
+              selectedModel
             );
 
             // Parse the draft and fill the form (simplified)
@@ -355,7 +364,7 @@ const App: React.FC = () => {
         Giải pháp 2: ${skknData.solution2}
         Giải pháp 3: ${skknData.solution3}
       `;
-      const result = await analyzeContent("", "text/plain", prompt, undefined, "logic_check", userKey);
+      const result = await analyzeContent("", "text/plain", prompt, undefined, "logic_check", userKey, undefined, undefined, undefined, selectedModel);
       setLogicCheckResult(JSON.parse(result));
     } catch (err) {
       setError("Lỗi kiểm tra logic.");
@@ -368,7 +377,7 @@ const App: React.FC = () => {
     setIsProcessingOriginality(true);
     try {
       const textToCheck = parsedData.rewriteText || rawOutput || skknData.solution1 + skknData.solution2;
-      const result = await analyzeContent("", "text/plain", textToCheck, undefined, "originality_check", userKey);
+      const result = await analyzeContent("", "text/plain", textToCheck, undefined, "originality_check", userKey, undefined, undefined, undefined, selectedModel);
       setOriginalityReport(JSON.parse(result));
     } catch (err) {
       setError("Lỗi kiểm tra nguyên bản.");
@@ -707,7 +716,9 @@ const App: React.FC = () => {
         activePreset,
         userKey,
         rewriteStyle,
-        summaryLevel
+        summaryLevel,
+        undefined,
+        selectedModel
       );
       setStatus(AppStatus.SUCCESS);
 
@@ -813,6 +824,21 @@ const App: React.FC = () => {
             <Button variant="primary" size="sm" onClick={saveKey} className="w-full h-8 text-[10px] font-black uppercase rounded-lg">
               {keySaved ? "ĐÃ LƯU" : "LƯU KEY"}
             </Button>
+          </section>
+
+          <section className="space-y-3">
+            <label className="text-[10px] font-black text-pink-600 uppercase tracking-widest flex items-center gap-2">
+              <Cpu className="w-3 h-3" /> MÔ HÌNH AI
+            </label>
+            <select
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              className="w-full px-3 py-2 text-[10px] font-bold bg-white border border-yellow-100 rounded-xl focus:border-blue-500 outline-none transition-all shadow-sm appearance-none cursor-pointer"
+            >
+              {AI_MODELS.map(m => (
+                <option key={m.id} value={m.id}>{m.label}</option>
+              ))}
+            </select>
           </section>
 
           <section className="space-y-4">
