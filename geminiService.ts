@@ -104,7 +104,7 @@ TẬP TRUNG TUYỆT ĐỐI VÀO 5 TRỤ CỘT (FOCUS AREAS):
   + **PHÂN BIỆT DẤU GẠCH NGANG (–/—) VÀ DẤU GẠCH NỐI (-):**
     - **Dấu gạch ngang (dài hơn):** Dùng để đánh dấu lời nói trực tiếp, các ý liệt kê hoặc phần chú thích. **PHẢI** có khoảng trắng hai bên (VD: "Anh ấy – người tôi yêu thương nhất – đã bỏ tôi mà đi.").
     - **Dấu gạch nối (ngắn hơn):** Dùng để nối các tiếng phiên âm nước ngoài (VD: "ti-vi", "ki-lô-mét") hoặc nối các con số (VD: "21-2"). **TUYỆT ĐỐI KHÔNG** được có khoảng trắng hai bên.
-    - **Dấu ba chấm (...):** Tuyệt đối **KHÔNG** được có khoảng trắng phía trước (VD: "đạo đức..." là đúng).
+    - **Dấu ba chấm (...):** Tuyệt đối **KHÔNG** được có khoảng trắng hoặc dấu phẩy (,) phía trước (VD: "đạo đức..." là đúng; "bài văn,..." là SAI). Nếu gặp trường hợp có dấu phẩy trước dấu ba chấm, phải báo lỗi với nội dung giải thích: "Lỗi dấu ba chấm không đi kèm dấu phẩy phía trước."
   + **YÊU CẦU ĐỐI VỚI CỘT "DẠNG ĐÚNG":**
     - **PHẢI THỰC SỰ SỬA LỖI:** Cột "Dạng đúng" bắt buộc phải là phiên bản đã được sửa lỗi hoàn chỉnh. Tuyệt đối không được sao chép nguyên văn "Từ sai" vào cột này.
     - **RÕ RÀNG VỀ KHOẢNG TRẮNG:** Nếu lỗi liên quan đến khoảng trắng (thừa/thiếu), cột "Dạng đúng" phải thể hiện chính xác việc thêm hoặc bớt khoảng trắng đó. 
