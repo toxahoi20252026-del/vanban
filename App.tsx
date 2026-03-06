@@ -567,8 +567,8 @@ const App: React.FC = () => {
             children: [
               { text: "STT", width: 5 },
               { text: "Từ sai/Lỗi logic", width: 12 },
-              { text: "Vị trí", width: 8 },
-              { text: "Đoạn văn chứa lỗi", width: 22 },
+              { text: "Vị trí (Phần/Mục)", width: 10 },
+              { text: "Đoạn văn chứa lỗi", width: 20 },
               { text: "Dạng đúng/Đề xuất", width: 12 },
               { text: "Giải thích lý do", width: 41 }
             ].map(col =>
@@ -584,8 +584,8 @@ const App: React.FC = () => {
               children: [
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[0], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 5, type: WidthType.PERCENTAGE } }),
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[1], color: "FF0000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 12, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 8, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 28 })] })], width: { size: 22, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 10, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 28 })] })], width: { size: 20, type: WidthType.PERCENTAGE } }),
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[4], color: "008000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], verticalAlign: VerticalAlign.CENTER, width: { size: 12, type: WidthType.PERCENTAGE } }),
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[5], font: "Times New Roman", size: 28 })] })], width: { size: 41, type: WidthType.PERCENTAGE } }),
               ],
@@ -1610,8 +1610,8 @@ const App: React.FC = () => {
                                 <tr className="bg-slate-50 border-y border-slate-100 font-black text-[11px] text-slate-500 uppercase tracking-widest text-left">
                                   <th className="py-4 px-4 w-[5%] min-w-[50px]">STT</th>
                                   <th className="py-4 px-4 w-[12%]">Từ sai/Lỗi logic</th>
-                                  <th className="py-4 px-4 w-[8%]">Vị trí</th>
-                                  <th className="py-4 px-4 w-[22%]">Đoạn văn chứa lỗi</th>
+                                  <th className="py-4 px-4 w-[10%]">Vị trí (Phần/Mục)</th>
+                                  <th className="py-4 px-4 w-[20%]">Đoạn văn chứa lỗi</th>
                                   <th className="py-4 px-4 w-[12%]">Dạng đúng/Đề xuất</th>
                                   <th className="py-4 px-4 w-[41%]">Giải thích lý do</th>
                                 </tr>
