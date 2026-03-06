@@ -92,7 +92,7 @@ const REWRITE_STYLES = [
   { id: 'creative', label: 'Sáng tạo', icon: <Sparkles className="w-3 h-3" />, desc: "Sáng tạo" },
   { id: 'concise', label: 'Súc tích', icon: <Zap className="w-3 h-3" />, desc: "Súc tích" },
   { id: 'persuasive', label: 'Thuyết phục', icon: <Target className="w-3 h-3" />, desc: "Thuyết phục" },
-  { id: 'skkn', label: 'SKKN', icon: <Award className="w-3 h-3" />, desc: "Sáng kiến kinh nghiệm" },
+  { id: 'skkn', label: 'Sáng kiến', icon: <Award className="w-3 h-3" />, desc: "Sáng kiến kinh nghiệm" },
 ];
 
 const AI_MODELS = [
@@ -391,6 +391,35 @@ const App: React.FC = () => {
     let sections = [];
 
     if (activePreset === 'rewrite' && rewriteStyle === 'skkn') {
+      // Clean content from redundant headers added by AI
+      let cleanedContent = content;
+      const headerPatterns = [
+        /CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM/i,
+        /Độc lập[\s\-\–]+Tự do[\s\-\–]+Hạnh phúc/i,
+        /Phú Quốc, ngày \d+ tháng \d+ năm \d+/i,
+        /ĐƠN YÊU CẦU CÔNG NHẬN SÁNG KIẾN/i,
+        /^\s*\*.*\d+.*\d+.*\*$/i, // Italicized date lines with '*'
+        /^\s*\*.*SÁNG KIẾN.*\*$/i,   // Italicized title lines with '*'
+        /^\s*\*.*CỘNG HÒA XÃ HỘI.*\*$/i // Italicized header lines with '*'
+      ];
+
+      const lines = cleanedContent.split('\n');
+      let linesToSkip = 0;
+      for (let j = 0; j < Math.min(lines.length, 15); j++) {
+        const line = lines[j].trim();
+        if (line === '') {
+          if (linesToSkip === j) linesToSkip++;
+          continue;
+        }
+        if (headerPatterns.some(pattern => pattern.test(line))) {
+          linesToSkip = j + 1;
+        } else if (linesToSkip > 0) {
+          // Once we've skipped some header lines and hit real content, stop skipping
+          break;
+        }
+      }
+      cleanedContent = lines.slice(linesToSkip).join('\n').trim();
+
       sections = [{
         properties: {
           page: {
@@ -431,7 +460,7 @@ const App: React.FC = () => {
             spacing: { after: 600 },
           }),
           ...(() => {
-            const lines = content.split('\n');
+            const lines = cleanedContent.split('\n');
             const result: any[] = [];
             let i = 0;
 
@@ -439,7 +468,7 @@ const App: React.FC = () => {
               const cells = l.trim().split('|');
               if (cells[0] === '') cells.shift();
               if (cells[cells.length - 1] === '') cells.pop();
-              return cells.map(c => c.trim().replace(/\*\*/g, ''));
+              return cells.map(c => c.trim().replace(/\*\*/g, '').replace(/^\s*\*+\s*/, ''));
             };
 
             while (i < lines.length) {
@@ -485,13 +514,15 @@ const App: React.FC = () => {
                 }));
                 result.push(new Paragraph({ spacing: { after: 200 } }));
               } else {
-                if (line !== '') {
-                  const isSectionHeader = /^[I|V|X]+\./.test(line);
-                  const isSubHeader = /^[0-9]+\./.test(line) || /^[0-9]+\.[0-9]+/.test(line);
-                  const isKinhGui = line.startsWith("Kính gửi:");
+                // Strip Markdown bullet points (asterisks) for SKKN mode
+                let processedLine = line.replace(/^\s*\*+\s*/, '');
+                if (processedLine !== '') {
+                  const isSectionHeader = /^[I|V|X]+\./.test(processedLine);
+                  const isSubHeader = /^[0-9]+\./.test(processedLine) || /^[0-9]+\.[0-9]+/.test(processedLine);
+                  const isKinhGui = processedLine.startsWith("Kính gửi:");
 
                   // Handle bold text in paragraphs
-                  const parts = line.split(/(\*\*.*?\*\*)/g);
+                  const parts = processedLine.split(/(\*\*.*?\*\*)/g);
                   const children = parts.map(part => {
                     if (part.startsWith('**') && part.endsWith('**')) {
                       return new TextRun({ text: part.slice(2, -2), bold: true, size: 28, font: "Times New Roman" });
@@ -507,7 +538,7 @@ const App: React.FC = () => {
                   result.push(new Paragraph({
                     children,
                     spacing: { after: 200, line: 360 },
-                    alignment: line.includes("NGƯỜI LÀM ĐƠN") || line.includes("NGƯỜI YÊU CẦU") || line.includes("ngày ... tháng ... năm")
+                    alignment: processedLine.includes("NGƯỜI LÀM ĐƠN") || processedLine.includes("NGƯỜI YÊU CẦU") || processedLine.includes("ngày ... tháng ... năm")
                       ? AlignmentType.RIGHT
                       : AlignmentType.JUSTIFIED,
                   }));
