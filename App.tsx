@@ -566,11 +566,11 @@ const App: React.FC = () => {
           new TableRow({
             children: [
               { text: "STT", width: 5 },
-              { text: "Từ sai/Lỗi logic", width: 12 },
-              { text: "Vị trí (Phần/Mục)", width: 10 },
-              { text: "Đoạn văn chứa lỗi", width: 20 },
-              { text: "Dạng đúng/Đề xuất", width: 12 },
-              { text: "Giải thích lý do", width: 41 }
+              { text: "Từ sai/Lỗi logic", width: 10 },
+              { text: "Vị trí (Phần/Mục)", width: 8 },
+              { text: "Đoạn văn chứa lỗi", width: 25 },
+              { text: "Dạng đúng/Đề xuất", width: 10 },
+              { text: "Giải thích lý do", width: 42 }
             ].map(col =>
               new TableCell({
                 children: [new Paragraph({ children: [new TextRun({ text: col.text, bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })],
@@ -583,11 +583,11 @@ const App: React.FC = () => {
             new TableRow({
               children: [
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[0], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 5, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[1], color: "FF0000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 12, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 10, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 28 })] })], width: { size: 20, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[4], color: "008000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], verticalAlign: VerticalAlign.CENTER, width: { size: 12, type: WidthType.PERCENTAGE } }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[5], font: "Times New Roman", size: 28 })] })], width: { size: 41, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[1], color: "FF0000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 10, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 8, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 28 })] })], width: { size: 25, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[4], color: "008000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], verticalAlign: VerticalAlign.CENTER, width: { size: 10, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[5], font: "Times New Roman", size: 28 })] })], width: { size: 42, type: WidthType.PERCENTAGE } }),
               ],
             })
           ),
@@ -617,8 +617,26 @@ const App: React.FC = () => {
             spacing: { before: 600, after: 200 },
           }),
           new Paragraph({
-            children: [new TextRun({ text: `Nhận xét tổng thể: ${reportData?.expert_summary || ""}`, size: 28, font: "Times New Roman" })],
+            children: [new TextRun({ text: `Xếp loại: ${reportData?.grade?.toUpperCase() || ""}`, bold: true, color: "FF0000", size: 28, font: "Times New Roman" })],
             spacing: { after: 400 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: "NHẬN XÉT CHUYÊN SÂU:", bold: true, size: 28, font: "Times New Roman" })],
+            spacing: { after: 100 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: reportData?.expert_summary || "", size: 28, font: "Times New Roman", italics: true })],
+            spacing: { after: 400 },
+            alignment: AlignmentType.JUSTIFIED,
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: "LỜI KHUYÊN NÂNG TẦM:", bold: true, size: 28, font: "Times New Roman" })],
+            spacing: { after: 100 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: reportData?.elevation_advice || "", size: 28, font: "Times New Roman" })],
+            spacing: { after: 600 },
+            alignment: AlignmentType.JUSTIFIED,
           }),
           ...(reportData?.formatting_analysis ? [
             new Paragraph({
@@ -1559,29 +1577,7 @@ const App: React.FC = () => {
 
               {activePreset === 'spellcheck' && (
                 <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                  <div className="text-center space-y-4 mb-12">
-                    <h2 className="text-[32px] md:text-[42px] font-black text-slate-900 tracking-tight leading-tight uppercase font-serif">BÁO CÁO HIỆU ĐÍNH HỌC THUẬT CHUYÊN SÂU</h2>
-                    <p className="text-[14px] md:text-[16px] font-medium text-slate-500 italic font-serif">Được thực hiện bởi Nhà giáo nhân dân - Giáo sư (VisionScript AI)</p>
-                    <div className="h-1 w-24 bg-blue-600 mx-auto rounded-full opacity-20"></div>
-                  </div>
 
-                  {fileData?.name && (
-                    <div className="bg-white/50 backdrop-blur-sm border border-slate-100 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
-                          <FileText className="w-6 h-6" />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">TÊN TÀI LIỆU PHÂN TÍCH</p>
-                          <p className="text-[16px] font-bold text-slate-800 font-serif">{fileData.name}</p>
-                        </div>
-                      </div>
-                      <div className="text-right hidden md:block">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">NGÀY XUẤT BÁO CÁO</p>
-                        <p className="text-[14px] font-medium text-slate-600 font-serif">{new Date().toLocaleDateString('vi-VN')} {new Date().toLocaleTimeString('vi-VN')}</p>
-                      </div>
-                    </div>
-                  )}
                   {!parsedData.reportData && rawOutput && (
                     <Card className="p-10 rounded-[3rem] border-slate-100 shadow-xl">
                       <div className="flex items-center gap-3 mb-6">
@@ -1596,46 +1592,7 @@ const App: React.FC = () => {
 
                   {parsedData.reportData && (
                     <>
-                      {parsedData.tableRows && parsedData.tableRows.length > 0 && (
-                        <Card className="p-8 md:p-12 rounded-[3.5rem] border-slate-100 shadow-xl bg-white overflow-hidden">
-                          <div className="flex items-center gap-3 mb-8">
-                            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-                              <Table2 className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <span className="text-[11px] font-black text-blue-700 uppercase tracking-widest">BẢNG KÊ LỖI CHI TIẾT & ĐỀ XUẤT</span>
-                          </div>
-                          <div className="overflow-x-auto -mx-8 md:-mx-12 px-8 md:px-12">
-                            <table className="w-full border-collapse font-serif text-[15px]">
-                              <thead>
-                                <tr className="bg-slate-50 border-y border-slate-100 font-black text-[11px] text-slate-500 uppercase tracking-widest text-left">
-                                  <th className="py-4 px-4 w-[5%] min-w-[50px]">STT</th>
-                                  <th className="py-4 px-4 w-[12%]">Từ sai/Lỗi logic</th>
-                                  <th className="py-4 px-4 w-[10%]">Vị trí (Phần/Mục)</th>
-                                  <th className="py-4 px-4 w-[20%]">Đoạn văn chứa lỗi</th>
-                                  <th className="py-4 px-4 w-[12%]">Dạng đúng/Đề xuất</th>
-                                  <th className="py-4 px-4 w-[41%]">Giải thích lý do</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {parsedData.tableRows.map((row, idx) => (
-                                  <tr key={idx} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                                    <td className="py-5 px-4 font-bold text-slate-400">{row[0]}</td>
-                                    <td className="py-5 px-4 font-bold text-red-600">{row[1]}</td>
-                                    <td className="py-5 px-4 text-slate-500">{row[2]}</td>
-                                    <td className="py-5 px-4 text-slate-700 italic leading-relaxed">{row[3]}</td>
-                                    <td className="py-5 px-4 font-bold text-emerald-600">{row[4]}</td>
-                                    <td className="py-5 px-4 text-[13px] text-slate-500 leading-relaxed">{row[5]}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="mt-8 flex items-center justify-between text-[11px] text-slate-400 italic">
-                            <p>* Trích dẫn NĐ 30/2020/NĐ-CP hoặc QĐ 240/QĐ-BGDĐT làm căn cứ pháp lý.</p>
-                            <p>Báo cáo tự động bởi VisionScript AI</p>
-                          </div>
-                        </Card>
-                      )}
+
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
                         <Card className="sm:col-span-1 lg:col-span-2 p-6 md:p-8 rounded-3xl md:rounded-[40px] flex flex-col items-center justify-center text-center gap-2 border-slate-100 shadow-lg shadow-slate-100/50">
