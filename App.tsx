@@ -175,7 +175,7 @@ const DiffView: React.FC<{ oldText: string, newText: string }> = ({ oldText, new
 
 const PRESETS = [
   { id: 'ocr', label: 'TRÍCH XUẤT', icon: <FileType className="w-4 h-4" />, prompt: "Trích xuất toàn bộ văn bản từ tài liệu này, giữ nguyên cấu trúc tiêu đề và bảng biểu nếu có." },
-  { id: 'spellcheck', label: 'SOÁT', icon: <GraduationCap className="w-4 h-4" />, prompt: "Phân tích chính tả và ngữ pháp chuyên sâu with tư cách Nhà giáo nhân dân - Giáo sư 45 năm kinh nghiệm." },
+  { id: 'spellcheck', label: 'SOÁT', icon: <GraduationCap className="w-4 h-4" />, prompt: "Soát lỗi chuyên sâu 5 trụ cột: Dấu câu, Ngữ pháp, Chính tả, Dùng từ và Đánh máy với tư cách Giáo sư ngôn ngữ đầu ngành." },
   { id: 'rewrite', label: 'VIẾT', icon: <Sparkles className="w-4 h-4" />, prompt: "Hãy viết lại văn bản này một cách xuất sắc hơn, nâng tầm ngôn từ nhưng vẫn giữ nguyên ý chính." },
   { id: 'summary', label: 'TÓM', icon: <FileText className="w-4 h-4" />, prompt: "Hãy tóm tắt những ý cốt lõi nhất của tài liệu này." },
 ];
@@ -1559,6 +1559,30 @@ const App: React.FC = () => {
 
                   {parsedData.reportData && (
                     <>
+                      {parsedData.markedText && (
+                        <Card className="p-8 md:p-12 rounded-[3.5rem] border-slate-100 shadow-xl bg-white relative overflow-hidden">
+                          <div className="absolute top-0 right-0 p-6 opacity-[0.05]">
+                            <SearchCheck className="w-20 h-20" />
+                          </div>
+                          <div className="flex items-center gap-3 mb-8 px-2">
+                            <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center">
+                              <Eye className="w-5 h-5 text-pink-500" />
+                            </div>
+                            <span className="text-[11px] font-black text-pink-700 uppercase tracking-widest">VĂN BẢN ĐÃ HIỆU ĐÍNH (TRỰC QUAN)</span>
+                          </div>
+                          <div className="bg-[#FFFFFC] border border-pink-50 rounded-3xl p-8 md:p-12 font-serif text-[18px] md:text-[20px] text-slate-800 leading-[2.2] whitespace-pre-wrap shadow-inner min-h-[400px]">
+                            {parsedData.markedText}
+                          </div>
+                          <div className="mt-6 flex items-center gap-4 px-4">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 bg-red-100 border border-red-200 rounded-sm"></div>
+                              <span className="text-[9px] font-black text-slate-400 uppercase">Lỗi đã đánh dấu</span>
+                            </div>
+                            <p className="text-[10px] text-slate-400 italic">Chú ý: Các lỗi được chuyên gia đánh dấu trực tiếp để bạn dễ dàng nhận diện và chỉnh sửa.</p>
+                          </div>
+                        </Card>
+                      )}
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
                         <Card className="sm:col-span-1 lg:col-span-2 p-6 md:p-8 rounded-3xl md:rounded-[40px] flex flex-col items-center justify-center text-center gap-2 border-slate-100 shadow-lg shadow-slate-100/50">
                           <div className="w-10 h-10 md:w-12 md:h-12 bg-red-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-1 md:mb-2">
@@ -1597,7 +1621,7 @@ const App: React.FC = () => {
                           <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg shadow-purple-200 shrink-0">
                             <BookOpenCheck className="w-5 h-5 md:w-6 md:h-6 text-white" />
                           </div>
-                          <h3 className="text-[16px] md:text-[20px] font-black text-slate-800 uppercase tracking-tight">PHÂN TÍCH SƯ PHẠM</h3>
+                          <h3 className="text-[16px] md:text-[20px] font-black text-slate-800 uppercase tracking-tight">PHÂN TÍCH HIỆU ĐÍNH</h3>
                         </div>
 
                         <div className="space-y-4 md:space-y-8">
