@@ -189,6 +189,7 @@ const App: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
   const [rawOutput, setRawOutput] = useState('');
   const [status, setStatus] = useState<AppStatus>(AppStatus.IDLE);
+  const [loadingText, setLoadingText] = useState("HỆ THỐNG ĐANG TRÍCH XUẤT TRI THỨC...");
   const [error, setError] = useState<string | null>(null);
   const [userKey, setUserKey] = useState<string>('');
   const [showKey, setShowKey] = useState(false);
@@ -707,12 +708,21 @@ const App: React.FC = () => {
       `;
     }
 
+    setStatus(AppStatus.LOADING);
+    setLoadingText("Đang khởi tạo chuyên gia 45 năm kinh nghiệm...");
+
     try {
       const result = await analyzeContent(
         finalBase64,
         finalMime,
         finalPrompt,
-        (chunk) => setRawOutput(chunk),
+        (chunk) => {
+          setRawOutput(chunk);
+          if (chunk.includes("[MARKED_START]") && !chunk.includes("[MARKED_END]")) setLoadingText("Đang hiệu đính và đánh dấu lỗi trực tiếp...");
+          else if (chunk.includes("[TABLE_START]") && !chunk.includes("[TABLE_END]")) setLoadingText("Đang lập bảng phân tích lỗi chi tiết...");
+          else if (chunk.includes("[REPORT_START]") && !chunk.includes("[REPORT_END]")) setLoadingText("Đang xuất báo cáo và xếp loại học thuật...");
+          else if (chunk.includes("dự phòng")) setLoadingText("Đang chuyển sang mô hình dự phòng siêu tốc...");
+        },
         activePreset,
         userKey,
         rewriteStyle,
@@ -1007,7 +1017,7 @@ const App: React.FC = () => {
           ) : status === AppStatus.LOADING && !rawOutput ? (
             <div className="h-full flex flex-col items-center justify-center gap-6">
               <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
-              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest animate-pulse">HỆ THỐNG ĐANG TRÍCH XUẤT TRI THỨC...</p>
+              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest animate-pulse">{loadingText}</p>
             </div>
           ) : activePreset === 'rewrite' && rewriteStyle === 'skkn' && status !== AppStatus.SUCCESS && status !== AppStatus.LOADING ? (
             <div className="max-w-6xl mx-auto animate-in zoom-in-95 duration-500 pb-12">
@@ -1491,7 +1501,7 @@ const App: React.FC = () => {
                     <Card className="p-10 rounded-[3rem] border-slate-100 shadow-xl">
                       <div className="flex items-center gap-3 mb-6">
                         <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
-                        <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">ĐANG PHÂN TÍCH DỮ LIỆU...</span>
+                        <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{loadingText}</span>
                       </div>
                       <div className="whitespace-pre-wrap font-serif text-[16px] text-slate-600 leading-relaxed">
                         {rawOutput.replace(/\[MARKED_START\]|\[MARKED_END\]|\[TABLE_START\]|\[TABLE_END\]|\[REPORT_START\]|\[REPORT_END\]/g, '')}

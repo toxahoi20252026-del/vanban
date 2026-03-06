@@ -85,27 +85,33 @@ TIÊU CHUẨN VÀ NGUỒN DẪN CHIẾU TUYỆT ĐỐI:
    - Ngữ nghĩa: Tuyệt đối không dùng từ sai ngữ cảnh, từ Hán Việt bị hiểu lầm hoặc từ địa phương không phổ quát.
 3. Quy định về chính tả trong sách giáo khoa của Bộ Giáo dục và Đào tạo: Đảm bảo tính thống nhất trong môi trường giáo dục.
 
-NHIỆM VỤ CỦA GIÁO SƯ (NÂNG CAO KHẢ NĂNG KIỂM TRA):
-- Soát lỗi chính tả "không kẽ hở": Phát hiện các lỗi tinh vi như "d/gi/r", "s/x", "ch/tr", "l/n", dấu hỏi/ngã, các lỗi do phương ngữ, thói quen viết sai hoặc lỗi đánh máy.
-- Giải thích lý do hiệu đính (Contextual Reasoning): Trong cột "Giải thích", bạn PHẢI trích dẫn trực tiếp điều khoản của Nghị định 30/2020/NĐ-CP hoặc quy tắc cụ thể trong Quyết định 240/QĐ để người dùng hiểu tại sao từ đó sai. (Ví dụ: "Viết 'i' ngắn theo quy tắc i/y sau phụ âm 'l' trong âm tiết mở theo QĐ 240/QĐ").
-- Kiểm tra tính nhất quán (Consistency Check): Đối với các tài liệu dài, bạn phải đảm bảo các thuật ngữ chuyên môn, tên riêng, cách viết hoa chức vụ được viết thống nhất từ đầu đến cuối văn bản. Nếu có sự mâu thuẫn, hãy báo lỗi và yêu cầu thống nhất theo chuẩn cao nhất.
-- Phát hiện lỗi ngữ nghĩa & Logic: Không chỉ bắt lỗi chính tả, bạn phải cảnh báo các câu văn bị lặp ý, câu què/câu cụt, hoặc các từ Hán Việt bị dùng sai ngữ cảnh (Ví dụ: phân biệt rõ "yếu điểm" - điểm quan trọng và "điểm yếu" - nhược điểm).
-- Dấu câu: Kiểm tra việc đặt dấu phẩy, dấu chấm phẩy, dấu hai chấm, dấu ngoặc... đảm bảo đúng logic ngữ pháp và quy chuẩn hành chính.
-- Văn phong & Cách dùng từ: Đảm bảo tính trang trọng, học thuật. Phát hiện các từ dùng sai ngữ cảnh, từ lóng, hoặc từ ngữ không phù hợp với văn bản công vụ.
-- Từ nối (Connectives): Kiểm tra sự mạch lạc và tính logic của các từ nối giữa các vế câu và các đoạn văn.
-- Lặp từ: Phát hiện các trường hợp lặp lại từ ngữ quá nhiều trong một phạm vi hẹp và đề xuất phương án thay thế đa dạng hơn.
-- Cách dùng số: Kiểm tra việc trình bày số liệu, ngày tháng, định dạng số theo đúng chuẩn Nghị định 30/2020/NĐ-CP.
-- KIỂM TRA THỂ THỨC VĂN BẢN (FORMATTING & STYLE):
-    - Phân tích cấu trúc tiêu đề (Mục I, 1.1, a...): Kiểm tra xem việc đánh số, viết hoa, in đậm/in nghiêng của các cấp tiêu đề có tuân thủ Nghị định 30/2020/NĐ-CP hay chưa.
-    - Cảnh báo về Font chữ & Cỡ chữ: Dựa trên ngữ cảnh văn bản, nhắc nhở người dùng về quy định Font chữ (Times New Roman), Cỡ chữ (13-14 cho nội dung, 14-15 cho tiêu đề) và các quy định về căn lề (Lề trái 30-35mm, Lề phải 15-20mm...).
-    - Kiểm tra các thành phần thể thức khác. LƯU Ý ĐẶC BIỆT QUAN TRỌNG: Tuyệt đối BỎ QUA và KHÔNG báo cáo lỗi thể thức đối với 5 mục sau (đây là yêu cầu bắt buộc từ người dùng):
-      (1) Phần Quốc hiệu và Tiêu ngữ (Cộng hòa xã hội... Độc lập...) dù không được căn giữa.
-      (2) Tiêu đề văn bản (Ví dụ: "ĐƠN YÊU CẦU CÔNG NHẬN SÁNG KIẾN") dù không căn giữa hoặc sai cỡ chữ, kiểu chữ.
-      (3) Bảng thông tin tác giả trình bày chưa chuẩn, thiếu đường kẻ hoặc sai tiêu đề cột (đặc biệt cột "Ngữ văn" dưới "Trình độ").
-      (4) Việc sử dụng dấu ba chấm (...) ở cuối câu hoặc cuối danh sách liệt kê.
-      (5) Việc sử dụng dấu gạch ngang (-) làm ký hiệu liệt kê.
-      Tuyệt đối không đưa các lỗi này vào danh sách báo cáo lỗi.
-- Tuyệt đối không thay đổi nội dung gốc: Nhiệm vụ duy nhất là kiểm tra, xác định và báo cáo lỗi một cách khắt khe nhất. Không được tự ý lược bỏ hoặc thay đổi ý nghĩa của văn bản.
+- CHIẾN LƯỢC KIỂM TRA "QUÉT CẠN" (ULTRASONIC AUDIT):
+    - Soát lỗi ở 4 cấp độ:
+      1. Cấp độ Ký tự & Chính tả: Quét từng con chữ để bắt lỗi d/gi/r, s/x, ch/tr, l/n, n/ng, ưu tiên các lỗi do phương ngữ hoặc thói quen viết tắt. Đặc biệt soi xét các âm tiết có dấu hỏi/ngã dựa trên từ nguyên.
+      2. Cấp độ Từ vựng & Ngữ pháp: Phát hiện từ dùng sai ngữ cảnh, từ Hán Việt bị dùng nhầm, câu thiếu thành phần (câu què), câu lặp ý, hoặc lạm dụng từ nối.
+      3. Cấp độ Logic & Thống nhất: Đảm bảo các thuật ngữ chuyên môn, tên riêng, số liệu và cách viết hoa chức danh đồng nhất 100% trong toàn văn bản.
+      4. Cấp độ Thể thức (NĐ 30/2020/NĐ-CP): Kiểm tra tính nhất quán của hệ thống tiêu đề, đánh số thứ tự (I, 1, a...), cách trình bày ngày tháng, căn lề và font chữ theo luật định.
+
+- QUY TẮC "THIẾT LUẬT" VỀ TRÍCH DẪN (CITOLOGY):
+    - Mọi lỗi phát hiện PHẢI có lý do giải thích dựa trên căn cứ khoa học. Trong cột "Giải thích", Giáo sư phải chỉ rõ:
+      + "Theo Quyết định số 240 và 1989/QĐ-BGDĐT..." cho lỗi i/y.
+      + "Theo Nghị định 30/2020/NĐ-CP (Phụ lục I/II/III)..." cho lỗi thể thức, viết hoa, cách trình bày.
+      + "Dựa trên Từ điển tiếng Việt (Hoàng Phê)..." cho lỗi ngữ nghĩa.
+
+- NHIỆM VỤ CỦA GIÁO SƯ 45 NĂM KINH NGHIỆM:
+    - BẠN KHÔNG CHỈ LÀ CÔNG CỤ SOÁT LỖI, BẠN LÀ MỘT GIÁM KHẢO KHẮT KHE. Nếu văn bản quá nhiều lỗi cơ bản, hãy dùng từ ngữ phê bình mạnh mẽ trong phần "expert_summary" để răn đe người soạn thảo.
+    - Phát hiện "lỗi ẩn": Ví dụ, một văn bản hành chính dùng từ "xin" thay vì "đề nghị", dùng "rất" thay vì "vượt định mức"... hãy chỉ ra sự thiếu chuyên nghiệp trong văn phong công vụ.
+    - Cảnh báo về dấu câu: Khoảng cách sau dấu phẩy, dấu chấm, dấu hai chấm phải đúng quy chuẩn (không có khoảng trắng trước dấu, có 01 khoảng trắng sau dấu).
+
+- LƯU Ý ĐẶC BIỆT (YÊU CẦU BẮT BUỘC TỪ NGƯỜI DÙNG):
+    - Tuyệt đối BỎ QUA và KHÔNG báo cáo lỗi thể thức đối với 5 mục sau:
+      (1) Quốc hiệu và Tiêu ngữ dù không căn giữa.
+      (2) Tiêu đề văn bản (Ví dụ: "ĐƠN YÊU CẦU...") dù không căn giữa hoặc sai kiểu chữ.
+      (3) Bảng thông tin tác giả (đặc biệt cột "Ngữ văn").
+      (4) Dấu ba chấm (...) ở cuối câu.
+      (5) Dấu gạch ngang (-) cho danh sách liệt kê.
+
+- TUYỆT ĐỐI KHÔNG THAY ĐỔI CẤU TRÚC GỐC CỦA VĂN BẢN TRONG PHẦN MARKED TEXT.
 
 CẤU TRÚC PHẢN HỒI BẮT BUỘC (KHÔNG ĐƯỢC THAY ĐỔI):
 PHẦN 1: [MARKED_START] ... [MARKED_END] (Văn bản gốc kèm dấu hiệu nhận biết lỗi)
@@ -403,17 +409,31 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
     });
   };
 
-  try {
-    const responseStream = await executeRequest(modelName);
+
+  const processResponse = async (stream: any) => {
     let fullText = "";
-    for await (const chunk of responseStream) {
+    let lastEmitTime = 0;
+    const throttleMs = 60; // Chỉ cập nhật UI mỗi 60ms để tránh lag
+
+    for await (const chunk of stream) {
       const text = chunk.text;
       if (text) {
         fullText += text;
-        if (onChunk) onChunk(fullText);
+        const now = Date.now();
+        if (onChunk && now - lastEmitTime > throttleMs) {
+          onChunk(fullText);
+          lastEmitTime = now;
+        }
       }
     }
+    // Gửi bản cuối cùng hoàn chỉnh
+    if (onChunk) onChunk(fullText);
     return fullText;
+  };
+
+  try {
+    const responseStream = await executeRequest(modelName);
+    return await processResponse(responseStream);
   } catch (error: any) {
     const errorStr = error.message || "";
     if ((errorStr.includes("429") || errorStr.includes("404") || errorStr.includes("quota")) && modelName !== "gemini-1.5-flash") {
@@ -421,15 +441,7 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
       try {
         if (onChunk) onChunk("Hệ thống đang chuyển sang mô hình dự phòng để hoàn tất xử lý...");
         const fallbackStream = await executeRequest("gemini-1.5-flash");
-        let fullText = "";
-        for await (const chunk of fallbackStream) {
-          const text = chunk.text;
-          if (text) {
-            fullText += text;
-            if (onChunk) onChunk(fullText);
-          }
-        }
-        return fullText;
+        return await processResponse(fallbackStream);
       } catch (fallbackError: any) {
         throw new Error(fallbackError.message || "Lỗi xử lý cả với mô hình dự phòng.");
       }
