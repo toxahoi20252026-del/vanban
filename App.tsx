@@ -564,22 +564,30 @@ const App: React.FC = () => {
         },
         rows: [
           new TableRow({
-            children: ["STT", "Từ sai/Lỗi logic", "Vị trí", "Đoạn văn chứa lỗi", "Dạng đúng/Đề xuất", "Giải thích lý do (Trích dẫn NĐ 30 hoặc QĐ 240/QĐ)"].map(text =>
+            children: [
+              { text: "STT", width: 5 },
+              { text: "Từ sai/Lỗi logic", width: 12 },
+              { text: "Vị trí", width: 8 },
+              { text: "Đoạn văn chứa lỗi", width: 22 },
+              { text: "Dạng đúng/Đề xuất", width: 12 },
+              { text: "Giải thích lý do", width: 41 }
+            ].map(col =>
               new TableCell({
-                children: [new Paragraph({ children: [new TextRun({ text, bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })],
+                children: [new Paragraph({ children: [new TextRun({ text: col.text, bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })],
                 verticalAlign: VerticalAlign.CENTER,
+                width: { size: col.width, type: WidthType.PERCENTAGE }
               })
             ),
           }),
           ...tableRows.map(row =>
             new TableRow({
               children: [
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[0], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })] }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[1], color: "FF0000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })] }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })] }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 28 })] })] }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[4], color: "008000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], verticalAlign: VerticalAlign.CENTER }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[5], font: "Times New Roman", size: 28 })] })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[0], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 5, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[1], color: "FF0000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 12, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[2], font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], width: { size: 8, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[3], font: "Times New Roman", italics: true, size: 28 })] })], width: { size: 22, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[4], color: "008000", bold: true, font: "Times New Roman", size: 28 })], alignment: AlignmentType.CENTER })], verticalAlign: VerticalAlign.CENTER, width: { size: 12, type: WidthType.PERCENTAGE } }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row[5], font: "Times New Roman", size: 28 })] })], width: { size: 41, type: WidthType.PERCENTAGE } }),
               ],
             })
           ),
@@ -605,7 +613,7 @@ const App: React.FC = () => {
           }),
           table,
           new Paragraph({
-            children: [new TextRun({ text: `Tổng số lỗi phát hiện: ${reportData?.total_errors || tableRows.length}`, bold: true, size: 28, font: "Times New Roman" })],
+            children: [new TextRun({ text: `Tổng số lỗi phát hiện: ${tableRows.length}`, bold: true, size: 28, font: "Times New Roman" })],
             spacing: { before: 600, after: 200 },
           }),
           new Paragraph({
@@ -839,7 +847,7 @@ const App: React.FC = () => {
         onClick={() => setIsSidebarOpen(false)}
       />
       <aside className={`w-80 bg-[#FFFBEB] md:bg-[#FFFBEB]/50 border-r border-yellow-100 flex flex-col z-50 shadow-2xl fixed inset-y-0 left-0 lg:static lg:translate-x-0 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="px-6 py-8 border-b border-yellow-50/50 flex flex-col gap-4 relative">
+        <div className="px-6 py-8 border-b border-yellow-50/50 flex flex-col gap-2 relative">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-3">
               <EduLogo className="w-5 h-5" />
@@ -849,11 +857,11 @@ const App: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
           </div>
-          <div className="pl-0.5">
-            <span className="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em] leading-tight block whitespace-nowrap">
+          <div className="pl-0.5 mt-1">
+            <span className="text-[12px] font-black text-blue-600 uppercase tracking-[0.15em] leading-tight block whitespace-nowrap">
               TRƯỜNG TH&THCS BÃI THƠM
             </span>
-            <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full mt-2 opacity-30"></div>
+            <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full mt-1.5 opacity-40"></div>
           </div>
         </div>
 
@@ -1600,12 +1608,12 @@ const App: React.FC = () => {
                             <table className="w-full border-collapse font-serif text-[15px]">
                               <thead>
                                 <tr className="bg-slate-50 border-y border-slate-100 font-black text-[11px] text-slate-500 uppercase tracking-widest text-left">
-                                  <th className="py-4 px-4 w-12">STT</th>
-                                  <th className="py-4 px-4">Từ sai/Lỗi logic</th>
-                                  <th className="py-4 px-4">Vị trí</th>
-                                  <th className="py-4 px-4">Đoạn văn chứa lỗi</th>
-                                  <th className="py-4 px-4">Dạng đúng/Đề xuất</th>
-                                  <th className="py-4 px-4">Giải thích lý do</th>
+                                  <th className="py-4 px-4 w-[5%] min-w-[50px]">STT</th>
+                                  <th className="py-4 px-4 w-[12%]">Từ sai/Lỗi logic</th>
+                                  <th className="py-4 px-4 w-[8%]">Vị trí</th>
+                                  <th className="py-4 px-4 w-[22%]">Đoạn văn chứa lỗi</th>
+                                  <th className="py-4 px-4 w-[12%]">Dạng đúng/Đề xuất</th>
+                                  <th className="py-4 px-4 w-[41%]">Giải thích lý do</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -1635,7 +1643,7 @@ const App: React.FC = () => {
                             <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-500" />
                           </div>
                           <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">TỔNG SỐ<br className="hidden md:block" />LỖI</span>
-                          <span className="text-[36px] md:text-[48px] font-black text-slate-900 leading-none">{parsedData.reportData.total_errors}</span>
+                          <span className="text-[36px] md:text-[48px] font-black text-slate-900 leading-none">{parsedData.tableRows.length}</span>
                         </Card>
 
                         <Card className="sm:col-span-1 lg:col-span-2 p-6 md:p-8 rounded-3xl md:rounded-[40px] flex flex-col items-center justify-center text-center gap-2 border-slate-100 shadow-lg shadow-slate-100/50">
