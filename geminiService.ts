@@ -419,21 +419,45 @@ HÃY GIỮ LẠI CÁC Ý TƯỞNG CỐT LÕI VÀ DIỄN ĐẠT CHÚNG MỘT CÁC
     return fullText;
   };
 
-  try {
-    const responseStream = await executeRequest(modelName);
-    return await processResponse(responseStream);
-  } catch (error: any) {
-    const errorStr = error.message || "";
-    if ((errorStr.includes("429") || errorStr.includes("404") || errorStr.includes("quota")) && modelName !== "gemini-1.5-flash") {
-      console.warn(`Model ${modelName} failed.Falling back to gemini - 1.5 - flash.`);
-      try {
-        if (onChunk) onChunk("Hệ thống đang chuyển sang mô hình dự phòng để hoàn tất xử lý...");
-        const fallbackStream = await executeRequest("gemini-1.5-flash");
-        return await processResponse(fallbackStream);
-      } catch (fallbackError: any) {
-        throw new Error(fallbackError.message || "Lỗi xử lý cả với mô hình dự phòng.");
+  const MAX_RETRIES = 3;
+  const RETRY_DELAYS = [3000, 6000, 12000]; // 3s, 6s, 12s
+
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const responseStream = await executeRequest(modelName);
+      return await processResponse(responseStream);
+    } catch (error: any) {
+      const errorStr = error.message || "";
+      const is503 = errorStr.includes("503") || errorStr.includes("UNAVAILABLE") || errorStr.includes("overloaded") || errorStr.includes("high demand");
+      const is429 = errorStr.includes("429") || errorStr.includes("quota");
+      const is404 = errorStr.includes("404");
+
+      // Retry on 503 (overloaded) errors
+      if (is503 && attempt < MAX_RETRIES) {
+        const waitTime = RETRY_DELAYS[attempt];
+        console.warn(`[Retry ${attempt + 1}/${MAX_RETRIES}] Model ${modelName} overloaded. Retrying in ${waitTime / 1000}s...`);
+        if (onChunk) onChunk(`⏳ Mô hình AI đang quá tải. Tự động thử lại sau ${waitTime / 1000} giây... (Lần ${attempt + 1}/${MAX_RETRIES})`);
+        await delay(waitTime);
+        continue;
       }
+
+      // Fallback to gemini-1.5-flash on 429/404/503 after retries exhausted
+      if ((is503 || is429 || is404) && modelName !== "gemini-1.5-flash") {
+        console.warn(`Model ${modelName} failed after ${attempt} retries. Falling back to gemini-1.5-flash.`);
+        try {
+          if (onChunk) onChunk("🔄 Hệ thống đang chuyển sang mô hình dự phòng (Gemini 1.5 Flash) để hoàn tất xử lý...");
+          const fallbackStream = await executeRequest("gemini-1.5-flash");
+          return await processResponse(fallbackStream);
+        } catch (fallbackError: any) {
+          throw new Error(fallbackError.message || "Lỗi xử lý cả với mô hình dự phòng.");
+        }
+      }
+
+      throw new Error(error.message || "Lỗi kết nối AI.");
     }
-    throw new Error(error.message || "Lỗi kết nối AI.");
   }
+
+  throw new Error("Đã thử lại nhiều lần nhưng không thành công. Vui lòng thử lại sau.");
 };
